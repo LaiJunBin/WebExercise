@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首頁-登入</title>
+    <link rel="stylesheet" href="./assets/css/main.css">
+</head>
+
+<body>
+    <div id="main">
+        <div id="top">測試登入系統</div>
+        <div id="content">
+            <form id="loginForm" name="loginForm" action="./assets/php/login.php" method="post">
+                <table align="center">
+                    <tr>
+                        <td>帳號：</td>
+                        <td>
+                            <input type="text" name="username" placeholder="請輸入帳號">
+                        </td>
+                        <td rowspan="2">
+                            <button type="submit">登入</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>密碼：</td>
+                        <td>
+                            <input type="password" name="password" placeholder="請輸入密碼">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <button>
+                                <a href="./assets/html/joinMemberForm.html">註冊帳號</a>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <button>查詢會員資訊</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="./assets/js/main.js"></script>
+
+</html>

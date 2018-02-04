@@ -1,0 +1,79 @@
+body{
+    position: absolute;
+    left:50%;
+    top:50%;
+    margin-left:-200px;
+    margin-top:-145px;
+}
+#main{
+    background:#39f;
+    height:290px;
+    width:400px;
+    border-radius:12px;
+    color:#fff;
+}
+#top{
+    text-align:center;
+    line-height:20px;
+    font-size:26px;
+    padding:20px 0;
+}
+form>table{
+    height:210px;
+    text-align:center;
+    width:100%;
+}
+td[colspan="3"]>button{
+    width:90%;
+    color:#fff;
+    font-size:16px;
+    height:60%;
+    border-radius:5px;
+    background:#333;
+    border:1px #333 solid;
+    transition:all,1s;
+}
+td[colspan="3"]>button:hover{
+    height:80%;
+    font-size:18px;
+    border-radius:8px;
+    color:#333;
+    background:rgb(109, 230, 139);
+    cursor:pointer;
+}
+button[type=submit]{
+    height:100%;
+    width:100px;
+    background:rgb(51, 51, 47);
+    border:1px rgba(67, 75, 78, 0.781) solid;
+    border-radius:12px;
+    color:#fff;
+    font-size:36px;
+    /* filter:drop-shadow(3px 5px 3px #333); */
+    transition:all,0.2s;
+    
+}
+button[type=submit]:hover{
+    cursor:pointer;
+    color:#000;
+    background:rgb(60, 255, 86);
+    border:1px solid rgb(43, 219, 72);
+    filter:drop-shadow(3px 5px 3px rgb(14, 167, 65));
+}
+input{
+    height:20px;
+    border-radius:5px;
+    padding:5px;
+    font-size:16px;
+}
+table tr:nth-child(1)>td:nth-child(1),
+table tr:nth-child(2)>td:nth-child(1),
+table tr:nth-child(3)>td:nth-child(1){
+    font-size:20px;
+    padding-bottom:5px;
+}
+a{
+    color:#fff;
+    text-decoration:none;
+    display:block;
+}
