@@ -1,0 +1,34 @@
+<div id="top">測試登入系統</div>
+<div id="content">
+    <form id="loginForm" name="loginForm" action="./assets/php/login.php" method="post">
+        <table align="center">
+            <tr>
+                <td>帳號：</td>
+                <td>
+                    <input type="text" name="username" placeholder="請輸入帳號">
+                </td>
+                <td rowspan="2">
+                    <button type="submit">登入</button>
+                </td>
+            </tr>
+            <tr>
+                <td>密碼：</td>
+                <td>
+                    <input type="password" name="password" placeholder="請輸入密碼">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <button type="button" id="joinMemberFormButton">
+                        註冊帳號
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <button type="button">查詢會員資訊</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
