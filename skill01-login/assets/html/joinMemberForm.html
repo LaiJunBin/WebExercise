@@ -1,53 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>註冊帳號</title>
-    <link rel="stylesheet" href="../css/main.css">
-</head>
-
-<body>
-    <div id="main">
-        <div id="top">測試登入系統</div>
-        <div id="content">
-            <form id="joinForm" name="joinForm" action="../php/joinMember.php" method="post">
-                <table align="center">
-                    <tr>
-                        <td>帳號：</td>
-                        <td>
-                            <input type="text" name="username" placeholder="請輸入帳號(6~8個字)">
-                        </td>
-                        <td rowspan="3">
-                            <button type="submit">註冊</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>密碼：</td>
-                        <td>
-                            <input type="password" name="password" placeholder="請輸入密碼(8~20字)">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>確認：</td>
-                        <td>
-                            <input type="password" name="passwordAgain" placeholder="請再次輸入密碼">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <button>
-                                <a href="../../index.html">回首頁</a>
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </div>
-</body>
-<script src="../js/main.js"></script>
-
-</html>
+<div id="top">測試登入系統</div>
+<div id="content">
+    <form id="joinForm" name="joinForm" action="../php/joinMember.php" method="post">
+        <table align="center">
+            <tr>
+                <td>帳號：</td>
+                <td>
+                    <input type="text" name="username" placeholder="請輸入帳號(6~8個字)">
+                </td>
+                <td rowspan="3">
+                    <button type="submit">註冊</button>
+                </td>
+            </tr>
+            <tr>
+                <td>密碼：</td>
+                <td>
+                    <input type="password" name="password" placeholder="請輸入密碼(8~20字)">
+                </td>
+            </tr>
+            <tr>
+                <td>確認：</td>
+                <td>
+                    <input type="password" name="passwordAgain" placeholder="請再次輸入密碼">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <button type="button" id="backHomeButton">
+                        回首頁
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="./assets/js/join.js"></script>
