@@ -77,3 +77,6 @@ a{
     text-decoration:none;
     display:block;
 }
+#searchResult{
+    font-size:18px;
+}
