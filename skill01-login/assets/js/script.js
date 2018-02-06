@@ -12,3 +12,15 @@ function addCSS(selector, path) {
     style.setAttribute('type', 'text/css')
     node[0].append(style);
 }
+function updateContent(selector, method, path, scripts = []) {
+    req = new XMLHttpRequest();
+    req.open(method, path);
+    req.onload = function () {
+        var node = document.querySelectorAll(selector);
+        for (script of scripts) {
+            addScript(selector, script);
+        }
+        node[0].innerHTML = this.responseText;
+    };
+    req.send();
+}
