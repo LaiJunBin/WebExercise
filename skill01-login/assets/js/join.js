@@ -19,7 +19,17 @@ if (joinForm !== null) {
                     var numberCount = matchString(password, numberArray);
                     if (lowerCount > 0 && upperCount > 0 && numberCount > 0) {
                         if (lowerCount + upperCount + numberCount == password.length) {
-                            return true;
+                            dataset = new FormData();
+                            dataset.append('username', username);
+                            dataset.append('password', password);
+                            req = new XMLHttpRequest();
+                            req.open("POST", './assets/php/joinMember.php');
+                            req.onload = function () {
+                                alert(this.responseText)
+                                if (this.responseText == '註冊成功')
+                                    location.hash = '';
+                            };
+                            req.send(dataset);
                         } else
                             alert('密碼中包含不合法字元!')
                     } else
@@ -31,9 +41,9 @@ if (joinForm !== null) {
         } else
             alert('帳號的長度必須在6~8個字之間!');
         evt.preventDefault();
+
     }, false);
 }
-
 function matchString(data, arr) {
     var count = 0;
     for (key of data) {
