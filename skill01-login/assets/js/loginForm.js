@@ -1,22 +1,17 @@
-document.title = '登入';
 var loginForm = document.getElementById('loginForm');
-var joinMemberFormButton = document.getElementById('joinMemberFormButton');
 if (loginForm !== null) {
     loginForm.addEventListener('submit', function (evt) {
-        evt.preventDefault();
-    }, false);
-}
-if (joinMemberFormButton != null) {
-    joinMemberFormButton.addEventListener('click', function () {
+        var username = loginForm.username.value;
+        var password = loginForm.password.value;
+        var loginData = new FormData();
+        loginData.append('username', username);
+        loginData.append('password', password);
         req = new XMLHttpRequest();
-        req.open('get', './assets/html/joinMemberForm.html');
+        req.open("POST", './assets/php/login.php');
         req.onload = function () {
-            var main = document.getElementById('main');
-            document.title = '註冊';
-            main.innerHTML = this.responseText;
-            addScript('#main', './assets/js/join.js');
-            addScript('#main', './assets/js/backHome.js');
+            alert(this.responseText);
         };
-        req.send();
+        req.send(loginData);
+        evt.preventDefault();
     }, false);
 }
