@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>miniGame</title>
+    <script>
+        function startGame(MAX_DATA, DATA_REPEAT) {
+            var gameMain = document.getElementById('game');
+            var user = [];
+            var data = [];
+            for (var i = 1; i <= MAX_DATA; i++)
+                data[i - 1] = i;
+            Array.prototype.removeAt = function (key) {
+                return this.filter(function (item, index) {
+                    return index != key;
+                });
+            };
+            Array.prototype.clear = function () {
+                while (this.length > 0)
+                    this.pop();
+            };
+            for (var i = 1; i <= DATA_REPEAT; i++) {
+                d = data.slice(0);
+                while (d.length > 0) {
+                    var div = document.createElement('div');
+                    var index = Math.floor(Math.random() * d.length)
+                    div.innerText = d[index];
+                    d = d.removeAt(index);
+                    div.style.background = '#333';
+                    div.addEventListener('click', updateGameStatus, false);
+                    gameMain.append(div);
+                    if ((MAX_DATA * i - d.length) % 10 == 0) {
+                        var br = document.createElement('br');
+                        gameMain.append(br);
+                    }
+                }
+            }
+
+            function updateGameStatus() {
+                var color = this.style.background;
+                if (color == 'rgb(51, 51, 51)') {
+                    if (user.length < DATA_REPEAT) {
+                        this.style.background = '#39f';
+                        user[user.length] = this.innerText;
+                    }
+                    if (user.lastIndexOf(user[0]) == DATA_REPEAT - 1) {
+                        user.clear();
+                        var div = document.getElementsByTagName('div');
+                        for (obj of div) {
+                            if (obj.innerText == this.innerText) {
+                                obj.style.background = 'rgb(251, 255, 69)';
+                                obj.removeEventListener('click', updateGameStatus);
+                            }
+                        }
+                    }
+                } else {
+                    this.style.background = '#333';
+                    user.pop();
+                }
+            }
+        }
+        window.onload = function () {
+            var maxNumberInput = document.getElementById('maxNumber');
+            var cardRepeat = document.getElementById('cardRepeat');
+            var startBtn = document.getElementById('startBtn');
+            var inputFocus = false;
+            var canStart = false;
+            maxNumberInput.addEventListener('blur', function () {
+                checkInputFormat(this.value, 2, 25);
+            }, false);
+            cardRepeat.addEventListener('blur', function () {
+                checkInputFormat(this.value, 2, 5);
+            }, false);
+            maxNumberInput.addEventListener('click', function () {
+                inputFocus = true;
+            }, false);
+            cardRepeat.addEventListener('click', function () {
+                inputFocus = true;
+            }, false);
+            startBtn.addEventListener('click', function () {
+                if (canStart)
+                    console.log("OK!");
+            }, false);
+
+            function checkInputFormat(data, min, max) {
+                if (inputFocus && !checkNumber(data)) {
+                    if (data.length != 0)
+                        alert('請確定輸入的是數字!');
+                    canStart = false;
+                } else {
+                    // var num = Number(data);
+                    // if (checkNumber(cardRepeat.value) && checkNumber(maxNumberInput.value)) {
+                    //     if (!checkNumberRange(data, min, max)) {
+                    //         alert('請確定輸入的數字介於範圍');
+                    //         canStart = false;
+                    //     } else
+                    //         canStart = true;
+                    // }
+
+                }
+                inputFocus = false;
+            }
+
+            function checkNumberRange(data, min, max) {
+                return (data >= min && data <= max);
+            }
+
+            function checkNumber(data) {
+                var pattern = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                var count = 0;
+                for (var i = 0; i < data.length; i++) {
+                    if (pattern.indexOf(Number(data.charAt(i))) == -1)
+                        return false;
+                }
+                return true;
+            }
+        };
+    </script>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        #game div {
+            color: #333;
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            margin: 10px;
+            font-size: 28px;
+            user-select: none;
+            line-height: 100px;
+            border-radius: 7px;
+            transition: all .2s;
+        }
+
+        div:hover {
+            cursor: pointer;
+        }
+
+        header {
+            font-size: 70px;
+        }
+
+        input[type=text] {
+            width: 400px;
+            height: 30px;
+            font-size: 22px;
+            line-height: 30px;
+        }
+
+        td {
+            font-size: 24px;
+        }
+
+        button {
+            width: 100%;
+            height: 40px;
+            font-size: 24px;
+            border: 0px;
+            background: #333;
+            color: #fff;
+            border-radius: 7px;
+            filter: drop-shadow(1px 1px 1px #333);
+            transition: all .1s;
+        }
+
+        button:hover {
+            cursor: pointer;
+            filter: drop-shadow(3px 3px 3px #333);
+            font-size: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header> Game settings</header>
+        <table align="center">
+            <tr>
+                <td>數字最大值：</td>
+                <td>
+                    <input type="text" id="maxNumber" placeholder="請輸入卡牌的最大值(2~25)">
+                </td>
+            </tr>
+            <tr>
+                <td>卡牌重複數：</td>
+                <td>
+                    <input type="text" id="cardRepeat" placeholder="請輸入數字卡重複的張數(2~5)">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id="startBtn">遊戲開始</button>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <div id="game"></div>
+
+
+    </main>
+</body>
+
+</html>
