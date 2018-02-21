@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>開關燈</title>
+    <script>
+        window.onload=function(){
+            var btn = document.getElementById('SwitchLight');
+            var status = document.getElementById('status');
+            var checkbox = document.querySelector('input[type=checkbox]');
+            var body = document.getElementsByTagName('body')[0]
+            var statusMap = new Map();
+            statusMap.set(true,['關燈','目前開著燈','#fff','#000']);
+            statusMap.set(false,['開燈','目前關著燈','#333','#fff']);
+            var bool = (sessionStorage['Light']==undefined)?false:(sessionStorage['Light']!='true')?true:false;
+            checkbox.checked = (sessionStorage['Light']!=undefined)?true:false;
+            btn.onclick = changeColor;
+            function changeColor(){
+                bool = !bool;
+                btn.innerText = statusMap.get(bool)[0];
+                status.innerText = statusMap.get(bool)[1];
+                body.style.background = statusMap.get(bool)[2];
+                body.style.color = statusMap.get(bool)[3];
+                checkbox.onclick()
+            }
+            checkbox.onclick = function(){
+                if(this.checked){
+                    sessionStorage.Light = bool;
+                }else{
+                    sessionStorage.removeItem('Light');
+                }
+            };
+            changeColor();
+        }
+    </script>
+</head>
+<body>
+    <button id="SwitchLight">關燈</button>
+    <div id="status">目前開著燈</div>
+    <input type="checkbox">記住我當前的畫面
+</body>
+</html>
