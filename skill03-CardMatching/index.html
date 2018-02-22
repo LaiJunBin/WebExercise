@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>miniGame</title>
     <script>
+        var timeInterval = null;
         function startGame(MAX_DATA, DATA_REPEAT, newLine) {
             var gameMain = document.getElementById('game');
             var user = [];
@@ -46,20 +47,36 @@
                     if (user.length < DATA_REPEAT) {
                         this.style.background = '#39f';
                         user[user.length] = this.innerText;
+                        var oCount = document.querySelector('#count span');
+                        var count = parseInt(oCount.innerText);
+                        count++;
+                        oCount.innerText = count;
                     }
                     if (user.lastIndexOf(user[0]) == DATA_REPEAT - 1) {
                         user.clear();
-                        var div = document.getElementsByTagName('div');
+                        var div = document.querySelectorAll('#game div');
                         for (obj of div) {
                             if (obj.innerText == this.innerText) {
                                 obj.style.background = 'rgb(251, 255, 69)';
                                 obj.removeEventListener('click', updateGameStatus);
                             }
                         }
+                        var obj = Array.from(div);
+                        if(obj.every(function (x) {
+                            return x.style.background == 'rgb(251, 255, 69)';
+                        })){
+                            clearInterval(timeInterval);
+                            setTimeout(success,150);
+                            function success(){
+                                var oTime = document.querySelector('#time span');
+                                var oCount = document.querySelector('#count span');
+                                alert('完成遊戲! 花了' + oTime.innerText +'秒，共點擊了' + oCount.innerText +'次按鈕!');
+                            }
+                        }
                     }
                 } else {
                     this.style.background = '#333';
-                    user.pop();
+                    user = user.removeAt(user.indexOf(this.innerText));
                 }
             }
         }
@@ -68,6 +85,7 @@
             var cardRepeat = document.getElementById('cardRepeat');
             var startBtn = document.getElementById('startBtn');
             var oTime = document.querySelector('#time span');
+            var oCount = document.querySelector('#count span');
             var inputFocus = false;
             var canStart = new Map();
             maxNumberInput.addEventListener('blur', checkInputFormat, false);
@@ -97,8 +115,9 @@
                         startBtn.innerText = '重新開始';
                         startGame(maxData, repeat, newLine);
                         oTime.innerText = 0;
-                        var timeInterval = setInterval(updateTime,1000);
-                        // clearInterval(timeInterval);
+                        oCount.innerText = 0;
+                        clearInterval(timeInterval);
+                        timeInterval = setInterval(updateTime, 1000);
                     }
 
                 } else {
@@ -137,11 +156,12 @@
                 }
                 return true;
             }
-            function updateTime(){
+
+            function updateTime() {
                 var time = parseInt(oTime.innerText);
                 time++;
                 oTime.innerText = time;
-                
+
             }
         };
     </script>
