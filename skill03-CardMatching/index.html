@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>miniGame</title>
     <script>
-        function startGame(MAX_DATA, DATA_REPEAT) {
+        function startGame(MAX_DATA, DATA_REPEAT, newLine) {
             var gameMain = document.getElementById('game');
             var user = [];
             var data = [];
@@ -32,7 +32,7 @@
                     div.style.background = '#333';
                     div.addEventListener('click', updateGameStatus, false);
                     gameMain.append(div);
-                    if ((MAX_DATA * i - d.length) % 10 == 0) {
+                    if ((MAX_DATA * i - d.length) % newLine == 0) {
                         var br = document.createElement('br');
                         gameMain.append(br);
                     }
@@ -67,13 +67,9 @@
             var cardRepeat = document.getElementById('cardRepeat');
             var startBtn = document.getElementById('startBtn');
             var inputFocus = false;
-            var canStart = false;
-            maxNumberInput.addEventListener('blur', function () {
-                checkInputFormat(this.value, 2, 25);
-            }, false);
-            cardRepeat.addEventListener('blur', function () {
-                checkInputFormat(this.value, 2, 5);
-            }, false);
+            var canStart = new Map();
+            maxNumberInput.addEventListener('blur', checkInputFormat, false);
+            cardRepeat.addEventListener('blur', checkInputFormat, false);
             maxNumberInput.addEventListener('click', function () {
                 inputFocus = true;
             }, false);
@@ -81,27 +77,44 @@
                 inputFocus = true;
             }, false);
             startBtn.addEventListener('click', function () {
-                if (canStart)
-                    console.log("OK!");
+                var values = Array.from(canStart.values());
+                var maxData = maxNumberInput.value;
+                var repeat = cardRepeat.value;
+                if (values.length > 0 && values.every(function (x) {
+                        return x == true;
+                    })) {
+                    var total = maxData * repeat;
+                    var newLine = 0;
+                    for (var i = 2; i <= Math.sqrt(total); i++) {
+                        if (total % i == 0)
+                            newLine = Math.max(i, total / i);
+                    }
+                    if (newLine > 10) {
+                        alert('換個數字吧，這個數字不適合。')
+                    } else
+                        startGame(maxData, repeat, newLine);
+
+                } else {
+                    alert('請確定有輸入設定');
+                }
             }, false);
 
-            function checkInputFormat(data, min, max) {
-                if (inputFocus && !checkNumber(data)) {
-                    if (data.length != 0)
-                        alert('請確定輸入的是數字!');
-                    canStart = false;
-                } else {
-                    // var num = Number(data);
-                    // if (checkNumber(cardRepeat.value) && checkNumber(maxNumberInput.value)) {
-                    //     if (!checkNumberRange(data, min, max)) {
-                    //         alert('請確定輸入的數字介於範圍');
-                    //         canStart = false;
-                    //     } else
-                    //         canStart = true;
-                    // }
+            function checkInputFormat() {
+                if (inputFocus) {
+                    var min = Number(this.min);
+                    var max = Number(this.max);
+                    var value = Number(this.value);
+                    canStart.set(this, false);
+                    if (checkNumber(value)) {
+                        if (value >= min && value <= max) {
+                            canStart.set(this, true);
+                        } else if (value != '')
+                            alert('請確定輸入的數字介於範圍');
 
+                    } else
+                        alert('請確定輸入的是數字');
+                    inputFocus = false;
                 }
-                inputFocus = false;
             }
 
             function checkNumberRange(data, min, max) {
@@ -183,13 +196,13 @@
             <tr>
                 <td>數字最大值：</td>
                 <td>
-                    <input type="text" id="maxNumber" placeholder="請輸入卡牌的最大值(2~25)">
+                    <input type="text" id="maxNumber" min="2" max="20" placeholder="請輸入卡牌的最大值(2~20)">
                 </td>
             </tr>
             <tr>
                 <td>卡牌重複數：</td>
                 <td>
-                    <input type="text" id="cardRepeat" placeholder="請輸入數字卡重複的張數(2~5)">
+                    <input type="text" id="cardRepeat" min="2" max="5" placeholder="請輸入數字卡重複的張數(2~5)">
                 </td>
             </tr>
             <tr>
