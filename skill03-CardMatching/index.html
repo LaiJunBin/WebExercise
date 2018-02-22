@@ -11,6 +11,7 @@
             var gameMain = document.getElementById('game');
             var user = [];
             var data = [];
+            gameMain.innerHTML = '';
             for (var i = 1; i <= MAX_DATA; i++)
                 data[i - 1] = i;
             Array.prototype.removeAt = function (key) {
@@ -66,6 +67,7 @@
             var maxNumberInput = document.getElementById('maxNumber');
             var cardRepeat = document.getElementById('cardRepeat');
             var startBtn = document.getElementById('startBtn');
+            var oTime = document.querySelector('#time span');
             var inputFocus = false;
             var canStart = new Map();
             maxNumberInput.addEventListener('blur', checkInputFormat, false);
@@ -90,9 +92,14 @@
                             newLine = Math.max(i, total / i);
                     }
                     if (newLine > 10) {
-                        alert('換個數字吧，這個數字不適合。')
-                    } else
+                        alert('換個數字吧，這個數字不適合。');
+                    } else {
+                        startBtn.innerText = '重新開始';
                         startGame(maxData, repeat, newLine);
+                        oTime.innerText = 0;
+                        var timeInterval = setInterval(updateTime,1000);
+                        // clearInterval(timeInterval);
+                    }
 
                 } else {
                     alert('請確定有輸入設定');
@@ -129,6 +136,12 @@
                         return false;
                 }
                 return true;
+            }
+            function updateTime(){
+                var time = parseInt(oTime.innerText);
+                time++;
+                oTime.innerText = time;
+                
             }
         };
     </script>
@@ -186,6 +199,23 @@
             filter: drop-shadow(3px 3px 3px #333);
             font-size: 22px;
         }
+
+        #time,
+        #count {
+            position: absolute;
+            font-size: 26px;
+            left: 20px;
+        }
+
+        #time {
+            top: 20px;
+
+        }
+
+        #count {
+            top: 60px;
+
+        }
     </style>
 </head>
 
@@ -213,8 +243,12 @@
         </table>
         <hr>
         <div id="game"></div>
-
-
+        <div id="time">時間：
+            <span>0</span>
+        </div>
+        <div id="count">點擊：
+            <span>0</span>
+        </div>
     </main>
 </body>
 
