@@ -8,6 +8,7 @@
     <title>miniGame</title>
     <script>
         var timeInterval = null;
+
         function startGame(MAX_DATA, DATA_REPEAT, newLine) {
             var gameMain = document.getElementById('game');
             var user = [];
@@ -24,6 +25,11 @@
                 while (this.length > 0)
                     this.pop();
             };
+            Array.prototype.count = function (element) {
+                return this.filter(function (x) {
+                    return element == x;
+                }).length;
+            }
             for (var i = 1; i <= DATA_REPEAT; i++) {
                 d = data.slice(0);
                 while (d.length > 0) {
@@ -52,7 +58,7 @@
                         count++;
                         oCount.innerText = count;
                     }
-                    if (user.lastIndexOf(user[0]) == DATA_REPEAT - 1) {
+                    if (user.count(user[0]) == DATA_REPEAT) {
                         user.clear();
                         var div = document.querySelectorAll('#game div');
                         for (obj of div) {
@@ -62,15 +68,16 @@
                             }
                         }
                         var obj = Array.from(div);
-                        if(obj.every(function (x) {
-                            return x.style.background == 'rgb(251, 255, 69)';
-                        })){
+                        if (obj.every(function (x) {
+                                return x.style.background == 'rgb(251, 255, 69)';
+                            })) {
                             clearInterval(timeInterval);
-                            setTimeout(success,150);
-                            function success(){
+                            setTimeout(success, 150);
+
+                            function success() {
                                 var oTime = document.querySelector('#time span');
                                 var oCount = document.querySelector('#count span');
-                                alert('完成遊戲! 花了' + oTime.innerText +'秒，共點擊了' + oCount.innerText +'次按鈕!');
+                                alert('完成遊戲! 花了' + oTime.innerText + '秒，共點擊了' + oCount.innerText + '次按鈕!');
                             }
                         }
                     }
@@ -79,6 +86,7 @@
                     user = user.removeAt(user.indexOf(this.innerText));
                 }
             }
+
         }
         window.onload = function () {
             var maxNumberInput = document.getElementById('maxNumber');
