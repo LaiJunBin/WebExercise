@@ -105,6 +105,7 @@
                 inputFocus = true;
             }, false);
             startBtn.addEventListener('click', function () {
+                inputFocus = true;
                 var values = Array.from(canStart.values());
                 var maxData = maxNumberInput.value;
                 var repeat = cardRepeat.value;
@@ -142,11 +143,13 @@
                     if (checkNumber(value)) {
                         if (value >= min && value <= max) {
                             canStart.set(this, true);
+                            return;
                         } else if (value != '')
                             alert('請確定輸入的數字介於範圍');
 
                     } else
                         alert('請確定輸入的是數字');
+                    this.value = '';
                     inputFocus = false;
                 }
             }
