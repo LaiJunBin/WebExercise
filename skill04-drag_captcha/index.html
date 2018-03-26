@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            var code = []; //初始化空陣列，存放答案
+
+            function init() {
+                code = []; //初始化成空
+                $("#defaultBlock,#validatorBlock").html(''); //先把驗證區與驗證碼的內容清空
+                for (var i = 1; i <= 4; i++) { //產生四個驗證碼
+                    $.ajax({
+                        url: 'getText.php',
+                        async: false, //同步
+                        success: function (res) {
+                            var img = document.createElement('img');
+                            img.src = 'plotCaptcha.php?code=' + res;
+                            $(img).addClass('captchaImg');
+                            $('#defaultBlock,#validatorBlock').append("<div></div>");
+                            $("#defaultBlock div").last().append(img);
+                            code.push(res);
+                        }
+                    });
+                }
+                code.sort(); //排序
+                // console.log(code);  //可印出答案 測試用
+                $(".captchaImg").draggable({ //拖動
+                    revert: function () {
+                        if ($(this).hasClass('drag-revert')) { //如果包含這個類別
+                            $(this).removeClass('drag-revert'); //刪除這個類別
+                            return true; //回去原位
+                        }
+                    },
+                    snap: '#defaultBlock div ,#validatorBlock div', //對齊誰
+                    snapMode: 'inner', //以什麼對齊
+                    snapTolerance: '10', //差多少px內自動貼齊
+                    cursor: 'move', //游標改變
+                });
+
+                $("#validatorBlock div, #defaultBlock div").droppable({ //可放置
+                    accept: '.captchaImg', //可給誰放置
+                    tolerance: 'touch', //只要碰到邊 就算放到
+                    drop: function (event, ui) { //當放下
+                        if ($(this).children().length > 0) { //如果已經有圖片放置在這
+                            return $(ui.draggable).addClass('drag-revert'); //設定還原位置的類別
+                        } else { //如果沒有
+                            ui.helper.appendTo($(this)).css({ //放入圖片
+                                top: 0,
+                                left: 0,
+                            });
+                        }
+                    }
+                });
+            }
+            $('#resetBtn').click(function () {
+                init();
+            });
+            $('#validatorBtn').click(function () {
+                var check = true;
+                if ($('#validatorBlock div img').length == 4) {
+                    $("#validatorBlock div img").each(function (index) {
+                        var userCode = $(this).attr('src').split('code=');
+                        if (code[index] != userCode[1])
+                            check = false;
+                    });
+                } else
+                    check = false
+                if (check)
+                    alert('驗證通過!');
+                else
+                    alert('驗證碼錯誤');
+            })
+            init();
+        });
+    </script>
+    <style>
+        #validatorBlock,
+        #defaultBlock {
+            width: 100%;
+        }
+
+        #validatorBlock div,
+        #defaultBlock div {
+            display: inline-block;
+            border: 1px solid #333;
+            margin: 0 5px;
+            height: 30px;
+            width: 30px;
+        }
+
+        #validatorBlock img,
+        #defaultBlock img {
+            border: 1px solid #333;
+            height: 30px;
+            width: 30px;
+        }
+
+        .captcha {
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>以ASCII由小到大排序</h2>
+    <div class="captcha">
+        驗證區
+        <div id="validatorBlock">
+        </div>
+        驗證碼
+        <div id="defaultBlock">
+
+        </div>
+    </div>
+    <button type="button" id="validatorBtn">驗證</button>
+    <button type="button" id="resetBtn">換一組</button>
+
+</body>
+
+</html>
