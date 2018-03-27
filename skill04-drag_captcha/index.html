@@ -23,7 +23,7 @@
                         success: function (res) {
                             var img = document.createElement('img');
                             img.src = 'plotCaptcha.php?code=' + res;
-                            $(img).addClass('captchaImg');
+                            $(img).addClass('captchaImg drag-revert'); //一開始預設會在放下時回原位
                             $('#defaultBlock,#validatorBlock').append("<div></div>");
                             $("#defaultBlock div").last().append(img);
                             code.push(res);
@@ -39,6 +39,9 @@
                             return true; //回去原位
                         }
                     },
+                    stop: function (event, ui) { // 當放下都預設下一次移動會回去原味
+                        ui.helper.addClass('drag-revert');
+                    },
                     snap: '#defaultBlock div ,#validatorBlock div', //對齊誰
                     snapMode: 'inner', //以什麼對齊
                     snapTolerance: '10', //差多少px內自動貼齊
@@ -52,6 +55,7 @@
                         if ($(this).children().length > 0) { //如果已經有圖片放置在這
                             return $(ui.draggable).addClass('drag-revert'); //設定還原位置的類別
                         } else { //如果沒有
+                            ui.helper.removeClass('drag-revert'); //代表放到對的位置上，所以刪除回位置的類別
                             ui.helper.appendTo($(this)).css({ //放入圖片
                                 top: 0,
                                 left: 0,
