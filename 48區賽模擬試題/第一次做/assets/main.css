@@ -1,0 +1,35 @@
+/* CSS Document */
+
+#container{
+	text-align:center;
+	width:1024px;
+	height:768px;
+	border:1px solid #333;
+	border-radius:5px;
+	margin:0 auto;
+		
+}
+
+h1{
+	background:#39f;
+	border-radius:5px;
+	margin-top:0;	
+	color:#fff;
+}
+
+.fill{
+	width:90%;
+	height:50px;
+	line-height:50px !important;	
+	margin-bottom:10px !important;
+}
+
+
+
+
+input{
+	width:90%;
+	border-radius:2px;
+	height:25px;
+	
+}
