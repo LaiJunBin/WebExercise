@@ -45,6 +45,7 @@
     <th>姓名</th>
     <th>權限</th>
     <th>行為</th>
+    <th>上次登入時間</th>
 </tr>
 	<?php
 		include_once("db.php");
@@ -73,7 +74,13 @@
                     <a class="ui-button "href="user/deleteUser.php?id=<?php echo $row['l_id']?>">刪除</a>
                     <?php } ?>
                 </td>
+                 <td>
+            	<?php echo $row['l_login'];?>
+                </td>
             </tr>
+           
+           
+            
 	<?php
     	}
 	

@@ -19,3 +19,7 @@
     <?php }
 	
 ?>
+
+
+<a href="?news" class="ui-button fill">瀏覽電子報</a>
+<a href="?newsQuery" class="ui-button fill">查詢及統計電子報</a>

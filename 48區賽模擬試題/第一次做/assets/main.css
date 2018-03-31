@@ -7,7 +7,7 @@
 	border:1px solid #333;
 	border-radius:5px;
 	margin:0 auto;
-		
+	overflow-y:scroll;
 }
 
 h1{

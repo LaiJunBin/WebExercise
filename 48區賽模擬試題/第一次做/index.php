@@ -15,7 +15,13 @@
 	
 ?>
 <body>
-	<div id="container">
+	<div id="container" style="position:relative">
+    <?php if(!empty($_GET)){
+		?>
+        <div id="back" style="position:absolute;top:0;left:0;">
+    	<a onclick="javascript:history.go(-1)" class="ui-button">回上頁</a>
+    </div>
+        <?php }?>
     	<?php
 			function issetGET($str){
 				return isset($_GET[$str]);
@@ -36,6 +42,14 @@
 				require('layout/modifyUser.php');
 			}elseif(issetGET('user')){
 				require('layout/user.php');
+			}elseif(issetGET('news')){
+				require('layout/news.php');	
+			}elseif(issetGET('makeNews')){
+				require('layout/makeNews.php');	
+			}elseif(issetGET('makeLayout')){
+				require('layout/makeLayout.php');	
+			}elseif(issetGET('modifyLayout')){
+				require('layout/modifyLayout.php');	
 			}
 
 			if(!issetGET('member')){
