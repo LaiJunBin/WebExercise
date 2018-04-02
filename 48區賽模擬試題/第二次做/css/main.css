@@ -1,0 +1,41 @@
+/* CSS Document */
+
+#container{
+	border:1px solid #333;
+	width:1024px;
+	height:768px;
+	overflow-y:scroll;
+	margin:auto;	
+	border-radius:5px;	
+	text-align:center;
+}
+
+#container>header{
+	font-size:30px;
+	line-height:35px;
+	background:#39f;
+	border-radius:5px;	
+	color:#fff;
+	font-weight:bolder;
+	height:35px;
+}
+
+.fill{
+	margin:10px 5px;
+	width:90%;
+	line-height:35px !important;
+		
+}
+
+input[type=text],input[type=password],textarea{
+	height:30px;
+	width:100%;
+	border-radius:5px;
+	border:1px solid #333;
+	font-size:25px;
+	line-height:30px;
+}
+
+#news{
+	overflow-y:scroll;	
+}
