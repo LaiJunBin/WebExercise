@@ -1,0 +1,58 @@
+body{
+	font-family:"微軟正黑體";	
+}
+
+#container{
+	width:1024px;
+	height:768px;
+	border:1px solid #333;
+	border-radius:5px;
+	margin:0 auto;
+	text-align:center;
+}
+
+#container>header{
+	font-size:36px;
+	border:1px solid #333;
+	background:#39f;
+	color:#fff;
+	user-select :none;
+}
+
+.fill{
+	width:90%;
+	margin:10px 0;
+	height:35px;
+	line-height:35px;
+	font-size:24px;	
+}
+
+input[type=text],input[type=password]{
+	width:90%;
+	
+	border-radius:5px;
+	height:24px;
+	font-size:20px;
+	line-height:24px;
+}
+
+table{
+	width:70%;	
+}
+
+table tr:nth-child(odd){
+	background:#E0E0E0;	
+	
+}
+table tr td:nth-child(n+1){
+	height:30px;
+	border-bottom:1px #333 solid !important;
+	border-collapse:collapse;
+}
+
+#captchaDrag img ,#captchaDrop div{
+	border:1px solid #333;
+	width:30px;
+	height:30px;	
+	display:inline-block;
+}
