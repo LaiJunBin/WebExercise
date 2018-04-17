@@ -1,5 +1,6 @@
 body{
-	font-family:"微軟正黑體";	
+	font-family:"微軟正黑體";
+		
 }
 
 #container{
@@ -27,7 +28,7 @@ body{
 	font-size:24px;	
 }
 
-input[type=text],input[type=password]{
+input[type=text],input[type=password],textarea,input[type=color],input[type=number]{
 	width:90%;
 	
 	border-radius:5px;
