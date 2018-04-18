@@ -49,6 +49,7 @@
                                     <button type="button" class="layoutBtn" va="<?php echo $result['l_id'];?>"><?php echo $result['l_title'];?></button>
                                     
                                     <div title="標題" class="news" va="<?php echo $result['l_id'];?>" style="display:none;">
+                                    <header>標題</header>
                                         <main>內文...</main>
                                     </div>
 								<?php }

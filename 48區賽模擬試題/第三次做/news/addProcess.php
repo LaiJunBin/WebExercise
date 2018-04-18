@@ -13,13 +13,14 @@
 		move_uploaded_file($_FILES['img']['tmp_name'],$img);
 	}
 	
-	$sql = 'insert into news (n_title,n_category,n_content,n_layout,n_img) values(:title,:category,:content,:layout,:img)';
+	$sql = 'insert into news (n_title,n_category,n_content,n_layout,n_img,n_link) values(:title,:category,:content,:layout,:img,:link)';
 	$query = $db->prepare($sql);
 	$query->bindValue(":title",$title);
 	$query->bindValue(":category",$category);
 	$query->bindValue(":content",$content);
 	$query->bindValue(":layout",$layout);
 	$query->bindValue(":img",$img);
+	$query->bindValue(":link",$link);
 	$query->execute();
 	header('location:index.php');
 ?>
