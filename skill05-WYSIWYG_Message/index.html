@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>test</title>
+<title>所見即所得留言版</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -17,14 +17,39 @@
 			return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 		}
 		
-		
+		function renderMessage(){
+			$.ajax({
+				url:'message.php',
+				success:function(res){
+					$("#MsgAll").html(res);	
+				}
+			});	
+		}
 		
 		$("#addMsgSubmitBtn").click(function(){
 			var title = $("#ui-id-1").text();
 			$(".dragObj").draggable('disable');
+			$(".dragObj").each(function(){
+				this.contentEditable = 'false';
+			});
+			$(".dragObj").removeClass('active');
 			var content = $("#content").html();
-			
-			console.log(title,content);
+			$.ajax({
+				url:'addMsgProcess.php',
+				method:'POST',
+				data:{
+					title:title,
+					content:content	
+				},
+				success:function(res){
+					$("#content,#objList").empty();
+					$("#addMsgDialog").dialog('close');
+					renderMessage();
+				},
+				error:function(err){
+					console.log(err);	
+				}
+			});
 			
 		});	
 		
@@ -44,7 +69,7 @@
 			$(document).on('keydown',function(){
 				setTimeout(function(){
 					var title = $("#titleInput").val();
-					$("#ui-id-1").text(title==""?"標題":title);
+					$("#addMsgDialog").dialog('option','title',title==""?"標題":title);
 				},5);
 			});
 		});
@@ -147,6 +172,9 @@
 			deleteTag.click(function(){
 				obj[0].remove();
 				$(this).parent().remove();
+				if($(".dragObj.active").length==0){
+					$("#operaDiv").css('display','none');
+				}
 			});
 			
 			objListDiv = $("<div>").css({
@@ -166,7 +194,7 @@
 		});
 		
 		
-		
+		renderMessage();
 		
 	});
 </script>
@@ -241,5 +269,10 @@
             <div id="content"></div>
         </div>
     </div>
+    <hr />
+    留言一覽：
+    <main id="MsgAll">
+    
+    </main>
 </body>
 </html>
