@@ -27,7 +27,10 @@
 		}
 		
 		$("#addMsgSubmitBtn").click(function(){
+			n=0;
 			var title = $("#ui-id-1").text();
+			$("#addMsgDialog").dialog('option','title',"標題");
+			$("#titleInput").val('');
 			$(".dragObj").draggable('disable');
 			$(".dragObj").each(function(){
 				this.contentEditable = 'false';
