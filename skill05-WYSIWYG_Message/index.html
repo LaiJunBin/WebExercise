@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+	$(function(){
+		function componentToHex(c) {
+			var hex = c.toString(16);
+			return hex.length == 1 ? "0" + hex : hex;
+		}
+		
+		function rgbToHex(r, g, b) {
+			return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+		}
+		
+		
+		
+		$("#addMsgSubmitBtn").click(function(){
+			var title = $("#ui-id-1").text();
+			$(".dragObj").draggable('disable');
+			var content = $("#content").html();
+			
+			console.log(title,content);
+			
+		});	
+		
+		var n = 0;
+		
+		$("#addMsgDialog").dialog({
+			autoOpen:false,
+			width:1224,
+			height:768,
+		});
+		
+		$("#addMsgBtn").click(function(){
+			$("#addMsgDialog").dialog('open');
+		});
+		
+		$("#titleInput").on('focus',function(){
+			$(document).on('keydown',function(){
+				setTimeout(function(){
+					var title = $("#titleInput").val();
+					$("#ui-id-1").text(title==""?"標題":title);
+				},5);
+			});
+		});
+		
+		$("#titleInput").on('blur',function(){
+			$(document).off('keydown');
+		});
+		
+		$("#tools button").click(function(){
+			n++;
+			var objTag = $(this).data('obj');
+			var objName = $(this).data('name');
+			var obj = $(`<${objTag}>`);
+			var label = $("<label>").addClass('dragLabel active').attr('for','dragObj'+n).text(objName + n).css({
+				'cursor':'pointer',
+				'width':'auto',	
+				'user-select':'none',
+			});
+			var objListDiv = null;
+			var deleteTag = $("<div>").css({
+				width:'auto',
+				position:'absolute',
+				right:'10px',
+				color:'red',
+				cursor:'pointer'
+			}).text('刪除');
+			switch (objTag){
+				case 'div':
+					obj.width(200).height(20).css('line-height','20px');;
+					break;
+			}
+			
+			$('.dragLabel').removeClass('active');
+			
+			obj.addClass('dragObj').attr('id','dragObj'+n);
+			obj[0].contentEditable = 'true';
+			
+			obj.draggable({
+				containment:'#content'	
+			});
+			$('#content').append(obj);
+			
+			obj.focus(function(){
+				var id = $(this).attr('id');
+				var [r,g,b] = $(this).css('color').replace('rgb(','').replace(')','').split(', ').map(function(x){
+					return parseInt(x);
+				});
+				$('.dragLabel').removeClass('active');
+				$(`[for=${id}]`).addClass('active');
+				$(".dragObj").removeClass('active');
+				$(this).addClass('active');
+				$("#operaDiv").css('display','')
+				.find('#widthInput').val($(this).width()).parent()
+				.find('#heightInput').val($(this).height()).parent()
+				.find('#sizeInput').val($(this).css('font-size').replace('px','')).parent()
+				.find('#lineHeightInput').val($(this).css('line-height').replace('px','')).parent()
+				.find('#colorInput').val(rgbToHex(r,g,b));
+				
+			});
+			
+			$("#operaDiv input").on('focus',function(){
+				var key = $(this).data('key');
+				var unit = $(this).data('unit');
+				$("#operaDiv input").removeClass('active');
+				$(this).addClass('active');
+				
+				$(document).on('keydown',function(){
+					setTimeout(function(){
+						var value = $("#operaDiv input.active").val();
+						$(".dragObj.active").css(key,value+unit);
+					},5);
+				});
+				
+				$("#colorInput").change(function(){
+					setTimeout(function(){
+						var value = $("#operaDiv input.active").val();
+						$(".dragObj.active").css('color',value);
+					},5);
+				});
+				
+			});
+			
+			$("#operaDiv input").on('blur',function(){
+				$(document).off('keydown');
+			});
+			
+			$("#content").click(function(){
+				$(this).removeClass('active');
+				if($(".dragObj.active").length==0){
+					$("#operaDiv").css('display','none');
+				}
+			});
+			
+			label.click(function(){
+				$('.dragLabel').removeClass('active');
+				$(this).addClass('active');
+				obj[0].focus();
+			});
+			
+			deleteTag.click(function(){
+				obj[0].remove();
+				$(this).parent().remove();
+			});
+			
+			objListDiv = $("<div>").css({
+				position:'relative',
+				display:'flex'	
+			}).append(label).append(deleteTag);
+			
+			obj[0].focus();
+			
+			$("#objList").append(objListDiv);
+		});
+		
+		$(".dragObj").click(function(){
+			$('.dragObj').removeClass('active');
+			$(this).addClass('active');
+			
+		});
+		
+		
+		
+		
+	});
+</script>
+
+<style>
+	#addMsgDialog{
+		display:none;	
+		overflow:hidden;
+	}
+	#addMsgDiv{
+		display:inline-flex;	
+		
+	}
+	#tools,#setting{
+		width:200px;
+		height:700px;	
+	}
+	#content{
+		width:824px;
+		height:700px;
+	}
+	button.active{
+		filter:contrast(.8);
+		cursor:default;
+	}
+	.dragLabel.active{
+		color:blue;	
+	}
+	
+	.dragObj.active{
+		border:1px solid #333;	
+	}
+	
+
+	#tools *,#setting *,#objList>*{
+		width:180px;
+		margin:5px;
+	}
+</style>
+</head>
+
+<body>
+	<button id="addMsgBtn" class="ui-button">新增留言</button>
+    <div id="addMsgDialog" title="標題">
+    	<div id="addMsgDiv">
+        	<div id="setting">
+            	<button class="ui-button" id="addMsgSubmitBtn">新增</button>
+            	<label for="titleInput">修改標題：</label>
+                <input type="text" id="titleInput" />
+                <div id="operaDiv" style="display:none;">
+                	<label for="widthInput">寬：</label>
+                    <input type="text" id="widthInput" data-key="width" data-unit="px" />
+                    <label for="heightInput">高：</label>
+                    <input type="text" id="heightInput" data-key="height" data-unit="px" />
+                    <label for="sizeInput">字體大小：</label>
+                    <input type="text" id="sizeInput" data-key="font-size" data-unit="px" />
+                    <label for="lineHeightInput">行高：</label>
+                    <input type="text" id="lineHeightInput" data-key="line-height" data-unit="px" />
+                    <label for="colorInput">顏色：</label>
+                    <input type="color" id="colorInput" data-key="color" data-unit="" />
+                </div>
+            </div>
+            <div id="tools">
+            	操作：
+                <button class="ui-button" data-obj="div" data-name="文字方塊">產生文字方塊</button>
+                物件列表：
+                <div id="objList">
+                	
+                </div>
+            </div>
+            
+            <div id="content"></div>
+        </div>
+    </div>
+</body>
+</html>
