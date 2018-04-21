@@ -1,0 +1,65 @@
+.container{
+	width:1024px;
+	height:768px;
+	border:1px solid #333;
+	border-radius:5px;	
+	margin:0 auto;
+	text-align:center;
+	font-family:"微軟正黑體";
+}
+
+.container>header{
+	width:1024px;
+	height:35px;
+	background:#39f;
+	font-size:26px;
+	line-height:35px;
+	color:#fff;
+	user-select:none;	
+}
+
+.fill{
+	width:90%;
+	height:35px;
+	font-size:16px;
+	line-height:35px;
+	margin:10px;	
+}
+
+table{
+	width:70%;
+	border-collapse:collapse;
+}
+table tr td{
+	border-bottom:1px solid #333;	
+}
+
+table tr{
+	height:35px;	
+}
+
+table tr:nth-child(1){
+	background:#78a;	
+	color:#fff;
+}
+
+table tr:nth-child(even){
+	background:#e8e8e8;
+}
+
+.input{
+	width:90%;
+	height:24px;
+	font-size:20px;
+	line-height:24px;
+	border:1px solid #333;
+	border-radius:5px;
+	background:rgba(255,255,255,.2);
+}
+
+#captcha div,#captchaImg img{
+	width:30px;
+	height:30px;
+	border:1px solid #333;	
+	display:inline-block;
+}
