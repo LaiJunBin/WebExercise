@@ -53,16 +53,20 @@
 				dataType:'json',
 				success:function(res){
 					$("#newsImage").hide();
-					$("#newsLinkDiv").css('margin-top','auto');
+					$("#newsLinkDiv").css('margin-top','0');
 					if(res.n_img!=''){
 						$("#newsImage").show();
 						$("#newsImage").attr('src',res.n_img);	
-						$("#newsLinkDiv").css('margin-top','280px');
+						
 					}
 					$("#news>header").text(res.n_title);
-					$("#news main").text(res.n_note);
+					$("#news main xmp").text(res.n_note);
 					$("#newsLinkDiv").html("<hr> 相關連結："+res.n_link);
 					$("#news").dialog('open');
+					if(parseInt($("#news main xmp").height())<280){
+						$("#newsLinkDiv").css('margin-top','280px');
+					}
+					
 				}
 			});
 			
@@ -131,7 +135,7 @@
                 <header>標題</header>
                 <div>
                     <img id="newsImage" width="300" height="300" style="float:left;"/>
-                    <main>內文...</main>
+                    <main><xmp>內文...</xmp></main>
                 </div>
                
                 <div id="newsLinkDiv">
