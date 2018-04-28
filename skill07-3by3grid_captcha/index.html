@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>九宮格驗證碼</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var ans = {
+                '連成水平線': [
+                    [1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9]
+                ],
+                '連成垂直線': [
+                    [1, 4, 7],
+                    [2, 5, 8],
+                    [3, 6, 9]
+                ],
+                '連成斜線': [
+                    [1, 5, 9],
+                    [3, 5, 7]
+                ],
+            };
+            var keys = Object.keys(ans);
+            var index = Math.floor(Math.random() * 3);
+            var key = keys[index];
+            var target = ans[key];
+            $("header").text(key);
+            for (var i = 1; i <= 3; i++) {
+                $("#captcha").append($("<tr>"));
+                for (var j = 1; j <= 3; j++) {
+                    var td = $("<td>").attr('data-id', (i - 1) * 3 + j);
+                    $("#captcha tr").last().append(td);
+                }
+            }
+            $('td').click(function () {
+                $(this).toggleClass("active");
+            });
+            $("#submitBtn").click(function () {
+                var data = [];
+                $(".active").each(function () {
+                    data.push($(this).data('id'));
+                });
+                if (data.length == 3 && target.some(x => x.filter(y => data.includes(y)).length == 3)) {
+                    alert('驗證通過!');
+                } else {
+                    alert('驗證失敗!');
+                }
+            });
+        });
+    </script>
+    <style>
+        #container {
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 500px;
+            height: 500px;
+            margin: 10px auto;
+        }
+
+        td {
+            border: 1px solid #333;
+        }
+
+        .active {
+            background: #39f;
+        }
+    </style>
+</head>
+
+<body>
+    <main id="container">
+        <header></header>
+        <table id="captcha"></table>
+        <button id="submitBtn">驗證</button>
+    </main>
+</body>
+
+</html>
