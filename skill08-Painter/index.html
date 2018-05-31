@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas</title>
+    <script>
+        window.onload = function () {
+            var records = [];
+            var nextRecords = [];
+            var canvas = document.getElementById("canvas");
+            var previousBtn = document.getElementById('previous');
+            var downloadBtn = document.getElementById('download');
+            var downloadLink = document.getElementById('downloadLink');
+            var nextBtn = document.getElementById('next');
+
+            var context = canvas.getContext('2d');
+            canvas.width = 500;
+            canvas.height = 500;
+            context.fillStyle = "rgb(255,255,255)";
+            context.fillRect(0, 0, 500, 500);
+
+            function draw(e) {
+                var drop = function () {
+                    records.push(record);
+                    if (previousBtn.hasAttribute('disabled'))
+                        previousBtn.removeAttribute('disabled');
+                    nextRecords = [];
+                    nextBtn.setAttribute('disabled', true);
+                    document.removeEventListener('mousemove', move);
+                    document.removeEventListener('mouseup', drop);
+                }
+                var record = [];
+                var x = e.offsetX;
+                var y = e.offsetY;
+                context.beginPath();
+                context.moveTo(x, y);
+                record.push(`context.beginPath();`);
+                record.push(`context.moveTo(${x}, ${y});`);
+                var move = function (e) {
+                    var x = e.offsetX;
+                    var y = e.offsetY;
+
+                    context.lineTo(x, y);
+                    record.push(`context.lineTo(${x}, ${y});`);
+                    context.stroke();
+                    record.push(`context.stroke();`);
+
+                }
+                document.addEventListener('mousemove', move);
+                document.addEventListener('mouseup', drop);
+            }
+
+
+
+            canvas.addEventListener('mousedown', draw);
+            previousBtn.addEventListener('click', function () {
+                nextRecords.push(records.pop());
+                if (nextBtn.hasAttribute('disabled'))
+                    nextBtn.removeAttribute('disabled');
+                if (records.length == 0)
+                    this.setAttribute('disabled', true);
+                context.clearRect(0, 0, 500, 500);
+                records.forEach((record) => {
+                    record.forEach((code) => {
+                        eval(code);
+                    });
+                });
+            });
+
+            next.addEventListener('click', function () {
+                var current = nextRecords.pop();
+                records.push(current);
+                if (previousBtn.hasAttribute('disabled'))
+                    previousBtn.removeAttribute('disabled');
+                current.forEach((code) => {
+                    eval(code);
+                });
+                if (nextRecords.length == 0)
+                    this.setAttribute('disabled', true);
+            });
+
+            downloadBtn.addEventListener('click', function () {
+                downloadLink.download = 'image.jpg';
+                downloadLink.href = canvas.toDataURL('image/jpeg');
+                downloadLink.click();
+            });
+        }
+    </script>
+    <style>
+        #canvas {
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <br>
+    <button id="previous" disabled>上一步</button>
+    <button id="next" disabled>下一步</button>
+    <button id="download">下載</button>
+    <a id="downloadLink"></a>
+</body>
+
+</html>
