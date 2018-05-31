@@ -63,6 +63,8 @@
                 if (records.length == 0)
                     this.setAttribute('disabled', true);
                 context.clearRect(0, 0, 500, 500);
+                context.fillStyle = "rgb(255,255,255)";
+                context.fillRect(0, 0, 500, 500);
                 records.forEach((record) => {
                     record.forEach((code) => {
                         eval(code);
