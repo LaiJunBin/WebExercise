@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML5</title>
+    <script>
+        window.onload = function () {
+            var trash = document.getElementById('trash');
+            var addBtn = document.getElementById('addDragObjBtn');
+            var dragList = document.getElementById('dragList');
+            var messageBox = document.getElementById('messagebox');
+            var clearMessageBtn = document.getElementById('clearMessageBtn');
+
+            addBtn.addEventListener('click', addDragList);
+
+            clearMessageBtn.addEventListener('click', function () {
+                while (messageBox.children.length > 1) {
+                    messageBox.children[1].remove();
+                }
+            });
+
+            trash.addEventListener('dragover', function (e) {
+                e.preventDefault();
+            });
+
+            trash.addEventListener('drop', function (e) {
+                let index = e.dataTransfer.getData('index');
+                let obj = document.querySelector(`#dragList>div[data-index="${index}"]`);
+
+                obj.style.transform = 'scale(0)';
+
+                setTimeout(() => {
+                    obj.remove();
+                }, 300);
+
+                this.style.background = "rgb(96, 200, 248)";
+                this.style.color = 'rgb(212, 14, 31)';
+
+                newMessage(`刪除了${obj.innerText}`);
+            });
+
+            trash.addEventListener('dragenter', function () {
+                this.style.background = "rgb(230, 18, 71)";
+                this.style.color = '#fff';
+            });
+
+            trash.addEventListener('dragleave', function () {
+                this.style.background = "rgb(96, 200, 248)";
+                this.style.color = 'rgb(212, 14, 31)';
+            });
+
+
+            function addDragList() {
+                let div = document.createElement('div');
+                let value = addBtn.dataset.value;
+                let text = `清單${value}`;
+
+                newMessage(`建立 ${text}`);
+
+                div.innerText = text;
+                div.setAttribute('draggable', true);
+                div.dataset.index = value;
+
+                addBtn.dataset.value++;
+
+                div.addEventListener('dragstart', function (e) {
+                    newMessage(`開始拖動 ${text}`);
+                    e.dataTransfer.setData('index', value);
+                    dragHoverEvent(e);
+                });
+
+                div.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                });
+
+                div.addEventListener('drop', drop);
+
+                dragList.appendChild(div);
+            }
+
+            function dragHoverEvent(e) {
+                let index = e.dataTransfer.getData('index');
+                let obj = document.querySelector(`#dragList>div[data-index="${index}"`);
+                for (let d of dragList.children) {
+                    d.addEventListener('dragenter', function () {
+                        if (!this.isSameNode(obj)) {
+                            this.style.background = 'rgba(51,153,255,.2)';
+                        }
+                    });
+                    d.addEventListener('dragleave', function () {
+                        if (!this.isSameNode(obj))
+                            this.style.background = '';
+                    });
+                }
+
+            }
+
+
+            function drop(e) {
+                let index = e.dataTransfer.getData('index');
+                let obj = document.querySelector(`#dragList>div[data-index="${index}"`);
+
+                let dragListItems = Array.from(dragList.children);
+                let thisOrder = dragListItems.indexOf(obj);
+                let targetOrder = dragListItems.indexOf(this);
+
+                this.style.background = '';
+
+                if (thisOrder > targetOrder) {
+                    dragList.insertBefore(obj, this);
+                } else if (thisOrder < targetOrder) {
+                    dragList.insertBefore(obj, this.nextSibling);
+                } else {
+                    newMessage(`${obj.innerText} 在原來的位置放下`);
+                    return;
+                }
+                newMessage(`${obj.innerText} 插入到 ${this.innerText} 的位置`);
+
+
+            }
+
+            function newMessage(text) {
+                let p = document.createElement('p');
+                p.innerText = text;
+                messageBox.appendChild(p);
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            margin: 20px;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin: 0 20px;
+            height: 500px;
+
+        }
+
+        #container {
+            display: flex;
+        }
+
+        #trash {
+            width: 100px;
+            height: 500px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            writing-mode: vertical-lr;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 1em;
+            background: rgb(96, 200, 248);
+            color: rgb(212, 14, 31);
+            transition: .5s;
+        }
+
+        #addDragObjBtn {
+            border: 1px solid #333;
+            border-radius: 5px;
+            height: 40px;
+            font-size: 24px;
+            line-height: 40px;
+            font-weight: 700;
+            background: rgb(92, 251, 114);
+            color: #211ce2;
+            cursor: pointer;
+            letter-spacing: .5em;
+            transition: .5s;
+        }
+
+        #dragList {
+            overflow-y: scroll;
+            flex: 1;
+        }
+
+        #dragList>div {
+            border: 1px #333 dotted;
+            border-radius: 5px;
+            height: 50px;
+            margin-top: 10px;
+            font-size: 30px;
+            text-align: center;
+            line-height: 50px;
+            letter-spacing: .5em;
+            transition: .3s;
+
+        }
+
+        #dragList>div:hover {
+            background: rgba(51, 51, 51, .1);
+            cursor: pointer;
+        }
+
+        #messagebox>p:first-child {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+        #messagebox>p:nth-child(n+2) {
+            margin-left: 20px;
+        }
+
+        #dragLast {
+            flex: 1;
+            height: 10px;
+        }
+
+        #clearMessageBtn {
+            border: 1px solid #333;
+            border-radius: 5px;
+            height: 16px;
+            font-size: 16px;
+            line-height: 16px;
+            font-weight: 700;
+            background: rgb(230, 18, 71);
+            color: #fff;
+            cursor: pointer;
+            padding: 2px;
+            box-sizing: unset;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="trash">
+            垃圾桶
+        </div>
+        <main>
+            <button id="addDragObjBtn" data-value="1">增加項目</button>
+            <div id="dragList">
+            </div>
+        </main>
+    </div>
+    <div id="messagebox">
+        <p>操作訊息：
+            <button id="clearMessageBtn">清空</button>
+        </p>
+    </div>
+</body>
+
+</html>
