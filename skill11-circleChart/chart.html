@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>chart</title>
+    <script>
+        window.onload = function () {
+            var cvs = document.getElementById('cvs');
+            var ctx = cvs.getContext('2d');
+
+            var width = 500;
+            var height = 500;
+
+            var PI2 = Math.PI * 2;
+            var r = 100;
+            cvs.width = width;
+            cvs.height = height;
+
+            function draw(input) {
+                ctx.fillStyle = 'rgba(0,0,0,0)';
+                ctx.fillRect(0, 0, width, height);
+                ctx.fillStyle = 'black';
+                var [data, keys] = [{},
+                    []
+                ];
+                input = input.split(',');
+                input.forEach((x) => {
+                    let d = x.split(':');
+                    data[d[0]] = parseInt(d[1]);
+                    keys.push(d[0]);
+                });
+
+
+                var total = 0;
+                keys.forEach((x) => {
+                    total += data[x];
+                });
+
+                var maxData = 0;
+                var angle = [];
+                keys.forEach((x) => {
+                    angle[x] = Math.round(360 * data[x] / total);
+                    if (angle[x] >= maxData)
+                        maxData = angle[x];
+                });
+                var [cut, index] = [0, 0];
+                ctx.save();
+                ctx.translate(width / 2, height / 2);
+
+
+                ctx.beginPath();
+                ctx.font = "14px arial";
+                for (let i = 0; i < 360; i++) {
+                    let x = Math.cos(PI2 / 360 * i) * r;
+                    let y = Math.sin(PI2 / 360 * i) * r;
+                    if (cut <= i) {
+                        let key = keys[index];
+                        let x = Math.cos(PI2 / 360 * (cut + angle[key] / 2)) * r;
+                        let y = Math.sin(PI2 / 360 * (cut + angle[key] / 2)) * r;
+
+                        cut += angle[key];
+
+                        ctx.closePath();
+                        ctx.stroke();
+                        ctx.beginPath();
+
+                        if (angle[key] == maxData) {
+                            ctx.save();
+                            ctx.translate(x * 0.1, y * 0.1);
+                        } else if (i != 0 && angle[keys[index - 1]] == maxData) {
+                            ctx.restore();
+                        }
+                        ctx.fillText(`${key}(${Math.round(angle[key]/360*100)}%)`, x, y);
+                        ctx.moveTo(0, 0);
+                        index++;
+                    }
+
+                    ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.stroke();
+                ctx.restore();
+            }
+
+
+            cvs.ondragover = function (e) {
+                e.preventDefault();
+            }
+            cvs.ondrop = function (e) {
+                let file = e.dataTransfer.files[0];
+                if (file.type.search(/text/) == 0) {
+                    let fr = new FileReader();
+                    fr.readAsText(file);
+                    fr.onload = function () {
+                        draw(this.result);
+                    }
+                } else {
+                    alert('只能上傳文字檔');
+                }
+
+
+                e.preventDefault();
+            }
+
+        }
+    </script>
+    <style>
+        #cvs {
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="cvs"></canvas>
+</body>
+
+</html>
