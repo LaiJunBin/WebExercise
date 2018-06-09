@@ -1,0 +1,5 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteRule ^account$ controller.php?page=account [nc,qsa]
+RewriteRule ^account/(.*)$ controller.php?page=account&account=$1 [nc,qsa]
