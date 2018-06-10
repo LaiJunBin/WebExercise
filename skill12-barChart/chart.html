@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>chart</title>
+    <script>
+        window.onload = function () {
+            var cvs = document.getElementById('cvs');
+            var ctx = cvs.getContext('2d');
+
+            var width = 500;
+            var height = 500;
+
+            cvs.width = width;
+            cvs.height = height;
+
+            function draw(input) {
+                ctx.fillStyle = 'rgba(255,255,255,1)';
+                ctx.fillRect(0, 0, width, height);
+                ctx.fillStyle = 'black';
+                ctx.rect(20, 0, width - 20, height - 50);
+                ctx.stroke();
+                cvs.style.border = "0";
+                ctx.save();
+                ctx.translate(50, height - 50);
+
+                var [data, keys] = [{},
+                    []
+                ];
+                var maxValue = 0;
+                input = input.split(',');
+                input.forEach((x) => {
+                    let d = x.split(':');
+                    let value = parseInt(d[1]);
+                    data[d[0]] = value;
+                    keys.push(d[0]);
+                    if (value > maxValue)
+                        maxValue = value;
+                });
+
+                var angle = [];
+
+
+                keys.forEach((x) => {
+                    angle[x] = Math.round(data[x] / maxValue * (height - 100));
+                });
+                var step = (width - 100) / keys.length;
+                ctx.font = '12px arial';
+                for (let i = 0; i < keys.length; i++) {
+                    let index = keys[i];
+                    ctx.fillRect(i * step, 0, step / 2, -angle[index]);
+                    ctx.fillText(`${index}(${data[index]})`, i * step + step / 20, 20);
+                }
+                ctx.stroke();
+                ctx.restore();
+
+            }
+
+
+            cvs.ondragover = function (e) {
+                e.preventDefault();
+            }
+            cvs.ondrop = function (e) {
+                let file = e.dataTransfer.files[0];
+                if (file.type.search(/text/) == 0) {
+                    let fr = new FileReader();
+                    fr.readAsText(file);
+                    fr.onload = function () {
+                        draw(this.result);
+                    }
+                } else {
+                    alert('只能上傳文字檔');
+                }
+
+
+                e.preventDefault();
+            }
+        }
+    </script>
+    <style>
+        #cvs {
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="cvs"></canvas>
+</body>
+
+</html>
