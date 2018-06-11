@@ -1,0 +1,7 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+
+
+RewriteRule ^(\w{1,10})$ index.php?key=$1 [nc,qsa,L,END]
+RewriteRule ^(.*\.(php)){0}$ index.php [F]
