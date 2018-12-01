@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Star Battle</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="./main.js"></script>
+    <link rel="stylesheet" href="./main.css">
+
+</head>
+
+<body>
+    <main>
+        <div id="game" data-init="true">
+            <div id="sounds">
+                <audio src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/sound/background.mp3" loop id="sound_bgm"></audio>
+                <audio src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/sound/shoot.mp3" id="sound_shoot"></audio>
+                <audio src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/sound/destroyed.mp3" id="sound_destroy"></audio>
+            </div>
+            <div id="backgrounds">
+                <div id="bg1" class="animObj"></div>
+                <div id="bg2" class="animObj"></div>
+                <div id="bg3" class="animObj" data-time="45"></div>
+                <div id="bg4" class="animObj" data-time="42"></div>
+                <div id="bg5" class="animObj" data-time="40"></div>
+                <div id="bg6" class="animObj" data-time="37"></div>
+                <div id="bg7" class="animObj" data-time="35"></div>
+                <div id="bg8" class="animObj" data-time="33"></div>
+                <div id="bg9" class="animObj" data-time="30"></div>
+            </div>
+            <div id="gameobjects"></div>
+            <div id="gamecontroller">
+                <div id="top-left" class="nopos">
+                    <div class="fontsize" data-value="1">A+</div>
+                    <div class="fontsize" data-value="-1">A-</div>
+                </div>
+                <div id="top-center" class="nopos">
+                    <div id="score">
+                        Score
+                        <div>0</div>
+                    </div>
+                    <img src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/logo/logo-02.png" alt="logo" id="logo">
+                    <div id="time">
+                        Time
+                        <div>0</div>
+                    </div>
+                </div>
+                <div id="top-right" class="nopos">
+                    <div id="sound"></div>
+                    <div id="status"></div>
+                </div>
+                <div id="bottom-left" class="nopos">
+                    <div id="controller">
+                        <div class="arrow"></div>
+                        <div class="arrow"></div>
+                        <div class="arrow"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div id="bottom-right" class="nopos">
+                    <div id="fuel">
+                        <div id="fuelFill"></div>
+                        <div id="fuelText">15</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="menu" class="nopos">
+            <img src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/logo/logo-02.png" alt="logo">
+            <ul>
+                <li>How to Play Star Battle.</li>
+                <li>1. Move the spaceship using the sensible areas in the screen;</li>
+                <li>2. The timer present the time lapsed;</li>
+                <li>3. The fuel counter show the remain fuel;</li>
+                <li>4. During the flight, the spaceship needs to destroy the asteroids and enemy spaceships that are
+                    presented
+                    in the space;</li>
+                <li>5. You can shoot pressing Space Bar;</li>
+                <li>6. If the spaceship hits a asteroid or another spaceship, you lose 15 points of fuel;</li>
+                <li>7. Enemy spaceship needs 1 shot to be destroyed, you will get 5 points for each enemy destroyed;</li>
+                <li>8. Asteroid needs 2 shots to be destroyed, you will get 10 points for each asteroid destroyed;</li>
+                <li>9. If you destroy a friendly spaceship, you lose 10 points;</li>
+                <li>10. During the flight, the spaceship needs to collect fuel in the space;</li>
+                <li>11. You can pause the game clicking in a button pause, or pressing the letter "p";</li>
+                <li>12. Go beyond all limits;</li>
+                <li>Battle in Space with Star Battle Championship...</li>
+                <li>
+                    <div class="ripple">
+                        <button class="btn startbtn" id="startBtn">Start Game</button>
+                        <div></div>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <div id="center-center" class="nopos">
+            <div id="inputName">
+                <header>
+                    Input Your Name
+                    <img src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/logo/logo-02.png" alt="logo">
+                </header>
+                <input type="text" name="name">
+                <button id="continueBtn" class="btn fill" disabled>Continue</button>
+                <button id="adBtn" class="btn fill">Watch ad Continue Game</button>
+            </div>
+            <div id="rank">
+                <header>
+                    Ranking Table
+                    <img src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/logo/logo-02.png" alt="logo">
+                </header>
+                <div id="table">
+                    <table>
+                        <tr>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Time</th>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="ripple">
+                    <button id="restartBtn" class="startbtn btn fill">Start Game</button>
+                    <div></div>
+                </div>
+            </div>
+            <div id="ad">
+                <header>
+                    <div>廣告播放中</div>
+                    <img src="./Module_C_素材/C_CLIENT_SIDE_MEDIA/logo/logo-02.png" alt="logo">
+                </header>
+                <video src="./movie/star-battle-ad.mp4" width="380" height="200"></video>
+                <button class="btn fill" id="continueGameBtn" disabled>Continue</button>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

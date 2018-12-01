@@ -1,0 +1,614 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    user-select: none;
+    color: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    width: 960px;
+    height: 600px;
+    overflow: hidden;
+    border: 1px solid #333;
+    position: relative;
+}
+
+#game {
+    width: 960px;
+    height: 600px;
+}
+
+[data-init] {
+    filter: brightness(.2);
+}
+
+#game * {
+    position: absolute;
+}
+
+.nopos * {
+    position: static !important;
+}
+
+
+/* backgrounds */
+
+#backgrounds>* {
+    z-index: -999;
+}
+
+#bg1 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/background-1.jpg');
+    background-size: 100% 100%;
+    width: 960px;
+    height: 600px;
+    animation: bgMove 7s infinite linear;
+}
+
+#bg2 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/background-1.jpg');
+    background-size: 100% 100%;
+    margin-left: 960px;
+    width: 960px;
+    height: 600px;
+    animation: bgMove 7s infinite linear;
+}
+
+#bg3 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/planets/001-global.png');
+    background-size: 100% 100%;
+    width: 360px;
+    height: 370px;
+    left: 500px;
+    top: -25px;
+    filter: brightness(.5);
+}
+
+
+#bg4 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/planets/012-jupiter.png');
+    background-size: 100% 100%;
+    width: 310px;
+    height: 300px;
+    left: 900px;
+    top: 500px;
+    filter: brightness(.4);
+}
+
+
+#bg5 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/planets/006-mars.png');
+    background-size: 100% 100%;
+    width: 275px;
+    height: 260px;
+    left: 400px;
+    top: 200px;
+    filter: brightness(.35);
+}
+
+
+#bg6 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/planets/010-uranus.png');
+    background-size: 100% 100%;
+    width: 275px;
+    height: 222px;
+    left: 100px;
+    top: 400px;
+    filter: brightness(.3);
+}
+
+#bg7 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/planets/009-saturn.png');
+    background-size: 100% 100%;
+    width: 275px;
+    height: 133px;
+    left: 100px;
+    top: 120px;
+    filter: brightness(.27);
+}
+
+#bg8 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/planets/002-travel.png');
+    background-size: 100% 100%;
+    width: 200px;
+    height: 190px;
+    left: 920px;
+    top: 233px;
+    filter: brightness(.25);
+}
+
+#bg9 {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/planets/007-planet-earth-1.png');
+    background-size: 100% 100%;
+    width: 50px;
+    height: 45px;
+    left: 1200px;
+    top: 222px;
+    filter: brightness(.2);
+}
+
+/* layout */
+#top-left {
+    top: 10px;
+    left: 10px;
+}
+
+#top-center {
+    top: 10px;
+    width: inherit;
+    display: flex;
+    justify-content: center;
+    z-index: -1;
+}
+
+#top-right {
+    top: 10px;
+    right: 10px;
+}
+
+#center-center {
+    width: inherit;
+    height: inherit;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#bottom-left {
+    bottom: 10px;
+    left: 10px;
+}
+
+#bottom-right {
+    bottom: 10px;
+    right: 10px;
+}
+
+
+/* gamecontroller */
+#gamecontroller {
+    width: inherit;
+    height: inherit;
+}
+
+.fontsize {
+    width: 35px;
+    height: 35px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: #f67b33;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#time,
+#score {
+    width: 60px;
+    height: 50px;
+    border: 3px solid #fff;
+    border-radius: 10px;
+    background: #f67b33;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 25px;
+}
+
+#logo {
+    width: 150px;
+    height: 100px;
+}
+
+#status,
+#sound {
+    background-size: 80px 40px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+#status {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/status.png');
+}
+
+#sound {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/sound.png');
+}
+
+#controller {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(85, 85, 85, .5);
+    cursor: pointer;
+}
+
+.arrow {
+    background: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/arrow-01.png');
+    background-size: 100% 100%;
+    width: 25px;
+    height: 25px;
+    position: absolute !important;
+    z-index: -1;
+}
+
+.arrow:nth-child(1) {
+    left: 50px;
+    top: 10px;
+    transform: rotate(0deg);
+}
+
+.arrow:nth-child(2) {
+    right: 10px;
+    top: 50px;
+    transform: rotate(90deg);
+}
+
+.arrow:nth-child(3) {
+    left: 50px;
+    bottom: 10px;
+    transform: rotate(180deg);
+}
+
+.arrow:nth-child(4) {
+    left: 10px;
+    top: 50px;
+    transform: rotate(-90deg);
+}
+
+#fuel {
+    -webkit-mask-image: url('./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/fuel-01.png');
+    -webkit-mask-size: 125px 125px;
+    width: 125px;
+    height: 125px;
+    background: #333;
+    position: relative !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#fuelFill {
+    position: absolute !important;
+    width: 125px;
+    height: 125px;
+    top: 62.5px;
+    background: red;
+    transition: all .3s;
+}
+
+#fuelText {
+    z-index: 9;
+    font-size: 32px;
+    font-weight: 700;
+    margin-right: 15px;
+    margin-top: 5px;
+}
+
+/* gameobjects */
+.bullet {
+    border-radius: 20px;
+}
+
+.aestroid {
+    animation: aestroid 1s infinite linear;
+}
+
+.fuel {
+    animation: fuel 1s infinite linear;
+}
+
+.traversal {
+    transition: left .5s, top .5s;
+}
+
+.item {
+    border-radius: 50%;
+    border: 2px solid white;
+    opacity: .75;
+}
+
+/* other */
+#menu,
+#center-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+}
+
+#center-center>div {
+    z-index: 999;
+}
+
+#menu img {
+    width: 150px;
+    height: 100px;
+    position: absolute !important;
+    left: 405px;
+    top: 10px;
+}
+
+#menu ul li:first-child {
+    font-size: 24px;
+}
+
+#menu ul {
+    margin-top: 120px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    padding-left: 50px;
+    list-style-type: none;
+}
+
+#menu li {
+    animation: showLi .2s linear;
+    animation-play-state: paused;
+}
+
+#menu li:last-child {
+    animation: showBtn .75s linear;
+    animation-play-state: paused;
+}
+
+.btn {
+    height: 40px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #fff;
+    background: orangered;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all .3s;
+}
+
+.startbtn:hover {
+    background: #f19e0d;
+}
+
+.ripple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative !important;
+    margin-top: 10px;
+}
+
+.ripple div {
+    background: #fff;
+    opacity: .5;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    position: absolute !important;
+    transition: all .3s;
+}
+
+.ripple button:active+div {
+    width: 40px;
+    height: 40px;
+}
+
+#inputName,
+#rank,
+#ad {
+    width: 400px;
+    background: #fff;
+    border-radius: 15px;
+    padding: 10px;
+    display: none;
+}
+
+
+#ad video {
+    margin: 10px 0;
+}
+
+[alt=logo] {
+    width: 75px;
+}
+
+#inputName>header,
+#rank>header,
+#ad>header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-weight: 900;
+    font-size: 24px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid black;
+}
+
+#inputName input {
+    width: 100%;
+    margin: 15px 0;
+    border: 1px solid #333;
+    height: 30px;
+    font-size: 24px;
+}
+
+.fill {
+    width: 100%;
+    margin: 5px 0;
+}
+
+[disabled] {
+    filter: brightness(.7);
+    cursor: no-drop;
+}
+
+#rank {
+    width: 500px;
+}
+
+
+#table {
+    width: 100%;
+    overflow-y: scroll;
+    color: #333;
+    margin: 5px 0;
+    height: 240px;
+}
+
+#table::-webkit-scrollbar {
+    width: 10px;
+    background-color: #a7a1a1;
+}
+
+#table::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #fffad8;
+}
+
+#table::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #a7a1a1;
+}
+
+/*
+#table::-webkit-scrollbar-thumb:window-inactive {
+
+} */
+
+#table table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #333;
+}
+
+#table td,
+#table th {
+    text-align: center;
+    font-weight: 700;
+}
+
+#table tr {
+    height: 40px;
+}
+
+#table tr:nth-child(odd) {
+    background: #fffad8;
+}
+
+#table tr:nth-child(even) {
+    background: #f5ecb4;
+}
+
+#table tr:first-child {
+    background: #f67b33;
+}
+
+
+
+@keyframes bgMove {
+    0% {
+        left: 0px;
+    }
+
+    100% {
+        left: -960px;
+    }
+}
+
+@keyframes planetMove {
+    0% {
+        left: 1920px;
+    }
+
+    100% {
+        left: -960px;
+    }
+}
+
+@keyframes aestroid {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fuel {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-15px, 0);
+    }
+
+    50% {
+        transform: translate(0, 0);
+    }
+
+    75% {
+        transform: translate(15px, 0);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes showLi {
+    0% {
+        transform: translate(-1000px, -50px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+
+@keyframes showBtn {
+    0% {
+        transform: translate(0, -600px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes flicker {
+    0% {
+        filter: contrast(1.1);
+    }
+
+    50% {
+        filter: contrast(2);
+    }
+
+    100% {
+        filter: contrast(1.1);
+    }
+}
