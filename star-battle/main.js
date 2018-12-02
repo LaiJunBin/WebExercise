@@ -118,15 +118,16 @@ $(function () {
         if (GAME_OPTIONS.FRAME % 30 == 0) {
 
             for (let i = 0; i <= Math.ceil(GAME_OPTIONS.DIFF / 2); i++) {
-                if ($(".object").length <= 20) {
-                    let n = rand(1, 8);
+                if ($(".object").length <= 20 && GAME_OPTIONS.DIFF <= 30 || $(".object").length <= 5) {
+                    let n = rand(1, 7);
                     if (n <= 4) {
                         new Ship(960, rand(30, 570));
-                    } else if (n <= 7) {
-                        new Aestroid(960, rand(30, 570));
                     } else {
-                        new Fuel(rand(50, 550), 0);
+                        new Aestroid(960, rand(30, 570));
                     }
+                }
+                if (rand(1, 8) == 8) {
+                    new Fuel(rand(50, 550), 0);
                 }
                 if ($(".item").length < 3) {
                     if (rand(1, 10) == 1) {
@@ -142,6 +143,23 @@ $(function () {
             }
             if (GAME_OPTIONS.HP <= 7 && $(".fuel").length <= 2)
                 new Fuel(rand(50, 550), 0);
+
+            if (GAME_OPTIONS.DIFF >= 30 && rand(1, 7) <= 3 && $(".bigEnemy").length < Math.floor(GAME_OPTIONS.TIME / 20)) {
+                if (rand(1, 2) == 1) {
+                    if (rand(1, 2) == 1) {
+                        new BigAestroid_DIFF(960, rand(50, 400));
+                    } else {
+                        new BigAestroid(960, rand(50, 400));
+                    }
+                } else {
+                    if (rand(1, 2) == 1) {
+                        new BigShip_DIFF(960, rand(50, 400));
+                    } else {
+                        new BigShip(960, rand(50, 400));
+                    }
+                }
+            }
+
             if (GAME_OPTIONS.TIME >= 30 && $(".bigEnemy").length < Math.floor(GAME_OPTIONS.TIME / 15) && rand(1, Math.max(5, (26 - GAME_OPTIONS.DIFF))) == 5) {
                 if (rand(1, 2) == 1) {
                     if (GAME_OPTIONS.TIME >= 60) {
