@@ -179,6 +179,10 @@ $(function () {
                 new BossShip(960, rand(100, 400));
             }
 
+            if ($(".boss").length == 0 && GAME_OPTIONS.TIME > 100 && rand(1, Math.max(15, (50 - GAME_OPTIONS.DIFF))) == 5) {
+                new StaticBoss(960, 150);
+            }
+
         }
 
         if (GAME_OPTIONS.AUTO_SHOOT_TIME > 0 && GAME_OPTIONS.FRAME % 5 == 0) {
@@ -381,10 +385,10 @@ $(function () {
                     $("#table table tr:gt(0)").remove();
                     res.forEach(record => {
                         $tr = $("<tr>").
-                        append($("<td>").text(record.rank)).
-                        append($("<td>").text(record.name)).
-                        append($("<td>").text(record.score)).
-                        append($("<td>").text(record.time));
+                            append($("<td>").text(record.rank)).
+                            append($("<td>").text(record.name)).
+                            append($("<td>").text(record.score)).
+                            append($("<td>").text(record.time));
                         $("#table table tr").last().after($tr);
                         $("#inputName").hide();
                         $("#rank").fadeIn(500);
@@ -671,10 +675,12 @@ $(function () {
         }
 
         collide(target) {
+            if (target.attack == -1)
+                this.destroy();
             if (target.name == 'enemy') {
                 target.hp = 0;
                 target.destroy();
-                this.hp -= 15;
+                this.hp -= target.attack || 15;
             } else if (target.name == 'fuel') {
                 target.destroy();
                 this.hp += 15;
@@ -1243,6 +1249,42 @@ $(function () {
                 return () => {
                     for (var i = 1; i <= rand(4, 8); i++) {
                         new Aestroid(this.x + rand(-100, 200), this.y + rand(-100, 200));
+                    }
+                    return func.apply(this, arguments);
+                }
+            })();
+        }
+
+    }
+
+    class StaticBoss extends Enemy {
+        constructor(x, y) {
+            super({
+                x: x,
+                y: y,
+                background: 'url("./Module_C_素材/C_CLIENT_SIDE_MEDIA/images/spaceship-reference_2_ok.png")',
+                width: 624,
+                height: 312,
+                score: 10000,
+                hp: 3000,
+                offsetX: -20,
+                className: 'boss',
+                outside_X: -736,
+                bombWidth: 500,
+                bombHeight: 500,
+                useHPBar: true,
+                attack: -1,
+            });
+
+            this.obj.css('transform', 'scale(1.1,1) rotate(-25deg)');
+            this.obj.find('.hp').css('transform', 'rotate(25deg)');
+            this.obj.find('.boss').css('transform', 'scale(1.2,1.5)');
+
+            this.update = (() => {
+                let func = this.update;
+                return () => {
+                    if (this.x <= 500) {
+                        this.offsetX = -0.5;
                     }
                     return func.apply(this, arguments);
                 }
