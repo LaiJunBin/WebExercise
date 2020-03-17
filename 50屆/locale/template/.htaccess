@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteRule ([^.]+)(.js|.css|.php|.html)$ $0 [L]
+RewriteRule ^.*$ index.html

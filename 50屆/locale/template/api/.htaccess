@@ -1,0 +1,4 @@
+RewriteEngine On
+
+
+RewriteRule (.*) api.php?request=$0 [nc,qsa]

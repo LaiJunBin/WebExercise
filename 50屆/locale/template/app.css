@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 微軟正黑體;
+}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style-type: none;
+}
+
+header{
+    background-color: #39f9;
+    padding: 10px;
+    display: flex;
+}
+
+header>.brand-text{
+    flex:1;
+    font-size:1.5em;
+}
+
+header>ul{
+    display: flex;
+    align-items: center;
+    
+    padding: 5px;
+}
+
+.brand-text a{
+    color:#fff;
+}
+
+header a{
+    color:#efefef;
+}
+
+header a:hover{
+    color:#fff;
+}
+
+.container{
+    margin: 5px auto;
+    padding: 10px;
+    width: 100%;
+}
+
+@media (min-width: 576px) {
+    .container{
+        width: 480px;
+    }
+}
+@media (min-width: 992px) {
+    .container{
+        width: 840px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container{
+        width: 1170px;
+    }
+}
+
+.form-group{
+    margin: 10px 0;
+}
+
+.form-control{
+    width: 100%;
+    display: inline-block;
+    border-radius:3px;
+    border:1px solid #ddd;
+    padding: 8px 5px;
+    font-size:14px;
+    color:#333;
+    margin-top: 5px;
+}
+
+.btn{
+    border:1px solid #ddd;
+    border-radius:3px;
+    background:#fff;
+    padding: 8px 20px;
+    
+    transition: all .3s;
+    cursor: pointer;
+}
+
+.btn:hover{
+    background:#eee;
+}
+
+.btn-success{
+    background: #3b5;
+    color:#fff;
+}
+
+.btn-success:hover{
+    background: #2a4;
+}
+
+.w-100{
+    width: 100%;
+}
