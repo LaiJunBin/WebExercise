@@ -1,0 +1,20 @@
+<template>
+    <header>
+        <div class="brand-text">
+            <router-link to="home">Template</router-link>
+        </div>
+        <ul>
+            <template v-if="!$root.user.username">
+                <li>
+                    <router-link to="login">登入</router-link>
+                </li>
+            </template>
+
+            <template v-else>
+                <li>
+                    <a href="#" @click.prevent="logout">登出</a>
+                </li>
+            </template>
+        </ul>
+    </header>
+</template>

@@ -4,7 +4,7 @@ export default {
             user: {}
         }
     },
-    mounted() {
+    created() {
         console.log('root!');
     }
 }

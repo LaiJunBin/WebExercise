@@ -1,13 +1,42 @@
 export default [{
-    path: '/home',
-    component: './app/home',
+    path: '/',
+    beforeAction(app, fullMatch) {
+        if (localStorage.user) {
+            app.user = JSON.parse(localStorage.user);
+        }
+
+        if (fullMatch)
+            return app.route.redirect('home');
+    },
     children: [{
-        path: '/route-test',
-        component: './app/home/test'
+        path: '/home',
+        component: './app/home',
+        beforeAction(app) {
+            if (localStorage.user) {
+                app.user = JSON.parse(localStorage.user);
+            }
+
+            if (app.user.username === undefined) {
+                return app.route.redirect('login');
+            }
+        },
+        children: [{
+            path: '/{id}',
+            component: './app/home/test'
+        }]
+    }, {
+        path: '/login',
+        component: 'app/login',
+        beforeAction(app) {
+            if (localStorage.user) {
+                app.user = JSON.parse(localStorage.user);
+            }
+
+            if (app.user.username !== undefined) {
+                return app.route.redirect('home');
+            }
+        },
     }]
-}, {
-    path: '/login',
-    component: 'app/login'
 }, {
     path: '*',
     redirect: '/home'

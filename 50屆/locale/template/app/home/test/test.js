@@ -5,7 +5,7 @@ export default {
         } 
     }, 
     mounted() { 
-        console.log('test work!'); 
+        console.log('app/home/test/test work!'); 
     }, 
     methods: { 
  

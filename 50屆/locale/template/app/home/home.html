@@ -1,8 +1,16 @@
 <template>
     <div>
-        home work!
+        <h2>home work!</h2>
+        <div>api test</div>
+        <div>{{ test }}</div>
 
-        <router-link to="home/route-test">route-test</router-link>
+        <div>route test</div>
+        <div class="btn-group">
+            <router-link to="home/1" class="btn" role="button">to 1</router-link>
+            <router-link to="home/2" class="btn" role="button">to 2</router-link>
+            <router-link to="home/3" class="btn" role="button">to 3</router-link>
+        </div>
+
         <router-view></router-view>
     </div>
 </template>
