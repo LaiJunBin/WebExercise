@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/WebExercise/51屆/global/contact/demo/static/css/main.c24e1fff.chunk.css",
-    "main.js": "/WebExercise/51屆/global/contact/demo/static/js/main.f4029a0b.chunk.js",
-    "main.js.map": "/WebExercise/51屆/global/contact/demo/static/js/main.f4029a0b.chunk.js.map",
+    "main.js": "/WebExercise/51屆/global/contact/demo/static/js/main.172e0dd2.chunk.js",
+    "main.js.map": "/WebExercise/51屆/global/contact/demo/static/js/main.172e0dd2.chunk.js.map",
     "runtime-main.js": "/WebExercise/51屆/global/contact/demo/static/js/runtime-main.be657595.js",
     "runtime-main.js.map": "/WebExercise/51屆/global/contact/demo/static/js/runtime-main.be657595.js.map",
     "static/js/2.e160f631.chunk.js": "/WebExercise/51屆/global/contact/demo/static/js/2.e160f631.chunk.js",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.be657595.js",
     "static/js/2.e160f631.chunk.js",
     "static/css/main.c24e1fff.chunk.css",
-    "static/js/main.f4029a0b.chunk.js"
+    "static/js/main.172e0dd2.chunk.js"
   ]
 }
