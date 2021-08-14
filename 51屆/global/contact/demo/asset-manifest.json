@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.c24e1fff.chunk.css",
-    "main.js": "/static/js/main.f4029a0b.chunk.js",
-    "main.js.map": "/static/js/main.f4029a0b.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.4c904b0b.js",
-    "runtime-main.js.map": "/static/js/runtime-main.4c904b0b.js.map",
-    "static/js/2.e160f631.chunk.js": "/static/js/2.e160f631.chunk.js",
-    "static/js/2.e160f631.chunk.js.map": "/static/js/2.e160f631.chunk.js.map",
-    "static/js/3.5858b519.chunk.js": "/static/js/3.5858b519.chunk.js",
-    "static/js/3.5858b519.chunk.js.map": "/static/js/3.5858b519.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/main.c24e1fff.chunk.css.map": "/static/css/main.c24e1fff.chunk.css.map",
-    "static/js/2.e160f631.chunk.js.LICENSE.txt": "/static/js/2.e160f631.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/static/media/logo.6ce24c58.svg"
+    "main.css": "/WebExercise/51屆/global/contact/demo/static/css/main.c24e1fff.chunk.css",
+    "main.js": "/WebExercise/51屆/global/contact/demo/static/js/main.f4029a0b.chunk.js",
+    "main.js.map": "/WebExercise/51屆/global/contact/demo/static/js/main.f4029a0b.chunk.js.map",
+    "runtime-main.js": "/WebExercise/51屆/global/contact/demo/static/js/runtime-main.be657595.js",
+    "runtime-main.js.map": "/WebExercise/51屆/global/contact/demo/static/js/runtime-main.be657595.js.map",
+    "static/js/2.e160f631.chunk.js": "/WebExercise/51屆/global/contact/demo/static/js/2.e160f631.chunk.js",
+    "static/js/2.e160f631.chunk.js.map": "/WebExercise/51屆/global/contact/demo/static/js/2.e160f631.chunk.js.map",
+    "static/js/3.5858b519.chunk.js": "/WebExercise/51屆/global/contact/demo/static/js/3.5858b519.chunk.js",
+    "static/js/3.5858b519.chunk.js.map": "/WebExercise/51屆/global/contact/demo/static/js/3.5858b519.chunk.js.map",
+    "index.html": "/WebExercise/51屆/global/contact/demo/index.html",
+    "static/css/main.c24e1fff.chunk.css.map": "/WebExercise/51屆/global/contact/demo/static/css/main.c24e1fff.chunk.css.map",
+    "static/js/2.e160f631.chunk.js.LICENSE.txt": "/WebExercise/51屆/global/contact/demo/static/js/2.e160f631.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/WebExercise/51屆/global/contact/demo/static/media/logo.6ce24c58.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.4c904b0b.js",
+    "static/js/runtime-main.be657595.js",
     "static/js/2.e160f631.chunk.js",
     "static/css/main.c24e1fff.chunk.css",
     "static/js/main.f4029a0b.chunk.js"
