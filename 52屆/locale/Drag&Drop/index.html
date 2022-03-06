@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Drop</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"
+        integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #todo-container {
+            width: 500px;
+            height: 1230px;
+            border: 1px solid #333;
+        }
+
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            grid-template-rows: 30px 1200px;
+        }
+
+        .todo-header {
+            background-color: rgb(14, 95, 175);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #times {
+            background-color: rgb(121, 188, 255);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #times>div {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        #todos {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row {
+            flex-grow: 1;
+            border-bottom: 1px solid #333;
+        }
+
+        .todo {
+            position: absolute;
+            padding: 6px;
+            border: 2px solid rgb(30, 62, 94);
+            background-color: rgb(121, 188, 255);
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="todo-container">
+        <div class="grid-2x2">
+            <div class="todo-header">時間</div>
+            <div class="todo-header">工作計畫</div>
+            <div id="times"></div>
+            <div id="todos"></div>
+        </div>
+    </div>
+
+    <script>
+        // 假資料，應該從PHP從資料庫抓出來
+        const todos = [{
+            id: 1,
+            startAt: 6,
+            endAt: 10,
+            text: '工作1',
+            status: '處理中',
+            priority: '普通'
+        }, {
+            id: 2,
+            startAt: 8,
+            endAt: 12,
+            text: '工作2',
+            status: '完成',
+            priority: '最速件'
+        }, {
+            id: 3,
+            startAt: 14,
+            endAt: 18,
+            text: '工作3',
+            status: '處理中',
+            priority: '普通'
+        }, {
+            id: 4,
+            startAt: 16,
+            endAt: 20,
+            text: '工作4',
+            status: '處理中',
+            priority: '速件'
+        }, {
+            id: 5,
+            startAt: 20,
+            endAt: 24,
+            text: '工作5',
+            status: '未處理',
+            priority: '普通'
+        }]
+
+        // 先抓到要處理的DOM
+        const timesDiv = document.querySelector('#times')
+        const todosDiv = document.querySelector('#todos')
+        const container = document.querySelector('#todo-container')
+
+        // 把數字轉為兩位數，位數不足補0
+        function toFixedLength(num, len) {
+            return num.toString().padStart(len, '0')
+        }
+
+        // 渲染畫面
+        function render() {
+            // 存渲染過的代辦事項，用來計算要往右邊推幾格
+            const renderedTodos = []
+
+            // 迴圈: 每2小時為1單位
+            for (let i = 0; i < 24; i += 2) {
+                // 產生 00-02、02-04...的div
+                const timeDiv = document.createElement('div')
+                timeDiv.innerText = `${toFixedLength(i, 2)}-${toFixedLength(i + 2, 2)}`
+                timesDiv.append(timeDiv)
+
+                // 每一列的div
+                const rowDiv = document.createElement('div')
+                rowDiv.className = 'row'
+                rowDiv.dataset.startAt = i
+
+                // 抓出當下要印的代辦事項
+                todos.filter(todo => todo.startAt === i).forEach(todo => {
+                    const todoDiv = document.createElement('div')
+                    todoDiv.className = 'todo'
+                    todoDiv.dataset.id = todo.id
+                    todoDiv.innerHTML = `
+                        <div>${toFixedLength(todo.startAt, 2)}-${toFixedLength(todo.endAt, 2)}</div>
+                        <div>${todo.text}</div>
+                        <div>${todo.status}</div>
+                        <div>${todo.priority}</div>
+                    `
+
+                    const width = 100
+                    const height = (todo.endAt - todo.startAt) / 2 * 100
+                    todoDiv.style.width = `${width}px`
+                    todoDiv.style.height = `${height}px`
+
+                    // 計算有幾個時間區間有重疊，需要往右推
+                    const orders = renderedTodos.filter(otherTodo => otherTodo.endAt > todo.startAt).map(todo => todo.order || 0)
+                    if (orders.length) {
+                        todo.order = Math.max(...orders) + 1
+                    } else {
+                        todo.order = 0
+                    }
+
+                    const offsetX = todo.order * (width + 10)
+                    todoDiv.style.left = `${offsetX}px`
+                    rowDiv.append(todoDiv)
+                    renderedTodos.push(todo)
+                })
+
+                todosDiv.append(rowDiv)
+            }
+
+            // 把 row 設定成可放置區域
+            $(".row").droppable({
+                // class為todo就可以放
+                accept: '.todo',
+                // 放置區域以滑鼠為準
+                tolerance: 'pointer',
+                // 放下後要做的事
+                drop: function (e, ui) {
+                    console.log(e, ui);
+                    const startAt = parseInt(e.target.dataset.startAt)
+                    const id = ui.draggable[0].dataset.id
+                    const todo = todos.find(todo => todo.id == id)
+
+                    // 先計算這個代辦事項共幾個小時在重新設定起始時間
+                    const interval = todo.endAt - todo.startAt
+                    const endAt = startAt + interval
+
+                    // 如果結束時間超出24會有問題
+                    if (endAt <= 24) {
+                        todo.startAt = startAt
+                        todo.endAt = endAt
+                    }
+
+                    // 重新渲染
+                    rerender()
+                }
+            })
+
+            // 將todo設定為可拖的DOM
+            $(".todo").draggable({
+                // 只能拖動Y軸
+                axis: 'y',
+                // 設定他只能在 #todos 當中拖動
+                containment: "#todos",
+            })
+
+            // 抓出當下最大往右推幾格並重新設定整個容器的寬度
+            const maxOrder = Math.max(...todos.map(todo => todo.order))
+            const newWidth = Math.max(500, 300 + maxOrder * 100)
+            container.style.width = `${newWidth}px`
+        }
+
+        function rerender() {
+            timesDiv.innerHTML = ''
+            todosDiv.innerHTML = ''
+            render()
+        }
+
+        // 記得要先渲染
+        render()
+    </script>
+</body>
+
+</html>
