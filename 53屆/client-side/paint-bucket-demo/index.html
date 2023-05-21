@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint Bucket Demo</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #eee;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        #controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        #color-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #color-control canvas {
+            margin-right: 20px;
+        }
+
+        #controls button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #controls button:hover {
+            background-color: #eee;
+        }
+
+        #canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #333;
+            background-color: #fff;
+        }
+
+        #current-color {
+            margin-right: 20px;
+            border: 1px solid #333;
+        }
+
+        #controls button.active {
+            background-color: #ddda;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>油漆桶 Demo</h1>
+    <div id="controls">
+        <div id="color-control">
+            <canvas id="current-color" width="100" height="100"></canvas>
+            <canvas id="palette" width="360" height="150"></canvas>
+        </div>
+        <div id="tool-control">
+            <button id="pen" class="active">鉛筆</button>
+            <button id="paint-bucket">油漆桶</button>
+        </div>
+    </div>
+
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script>
+        const currentColor = document.getElementById('current-color');
+        const currentColorCtx = currentColor.getContext('2d');
+
+        const palette = document.getElementById('palette');
+        const paletteCtx = palette.getContext('2d', { willReadFrequently: true });
+        
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const paintBucketBtn = document.getElementById('paint-bucket');
+        const penBtn = document.getElementById('pen');
+
+        let isDrawing = false;
+        let x = 0;
+        let y = 0;
+        let size = 1;
+        let color = 'rgba(0, 0, 0, 255)';
+        let mode = 'pen';
+
+        ctx.lineWidth = size;
+
+        paintBucketBtn.addEventListener('click', () => {
+            mode = 'paint-bucket';
+            paintBucketBtn.classList.add('active');
+            penBtn.classList.remove('active');
+        });
+
+        penBtn.addEventListener('click', () => {
+            mode = 'pen';
+            penBtn.classList.add('active');
+            paintBucketBtn.classList.remove('active');
+        });
+
+        function updateCurrentColor() {
+            currentColorCtx.fillStyle = color;
+            currentColorCtx.fillRect(0, 0, currentColor.width, currentColor.height);
+        }
+
+        updateCurrentColor();
+
+        function initPalette() {
+            for(let i=0;i<180;i++){
+                var paletteGradient = paletteCtx.createLinearGradient(i, 0, i+1, palette.height);
+                paletteGradient.addColorStop(0, 'white');
+                paletteGradient.addColorStop(0.5, `hsl(${i*2},100%,50%)`);
+                paletteGradient.addColorStop(1, 'black');
+                paletteCtx.fillStyle = paletteGradient;
+                paletteCtx.fillRect(i*2, 0, 2, palette.height);
+            }
+        }
+
+        initPalette();
+
+        let isSelectingColor = false;
+        palette.addEventListener('mousedown', e => {
+            isSelectingColor = true;
+        });
+
+        palette.addEventListener('mousemove', e => {
+            if (isSelectingColor === true) {
+                x = e.offsetX;
+                y = e.offsetY;
+                
+                initPalette();
+                paletteCtx.beginPath();
+                paletteCtx.arc(x, y, 5, 0, 2 * Math.PI);
+                paletteCtx.stroke();
+                paletteCtx.closePath();
+
+                const imageData = paletteCtx.getImageData(x, y, 1, 1);
+                const pixel = imageData.data;
+                const r = pixel[0];
+                const g = pixel[1];
+                const b = pixel[2];
+                const a = pixel[3];
+                color = `rgba(${r}, ${g}, ${b}, ${a})`;
+                updateCurrentColor();
+            }
+        })
+
+        window.addEventListener('mouseup', e => {
+            if (isSelectingColor === true) {
+                isSelectingColor = false;
+                initPalette();
+            }
+        });
+
+        canvas.addEventListener('mousedown', e => {
+            if (mode === 'paint-bucket') {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const pixelStack = [[e.offsetX, e.offsetY]];
+                const pixel = imageData.data;
+                const baseColorIndex = (e.offsetY * canvas.width + e.offsetX) * 4;
+                const baseColor = [pixel[baseColorIndex], pixel[baseColorIndex + 1], pixel[baseColorIndex + 2], pixel[baseColorIndex + 3]];
+                const newColor = color.replace(/[^\d,]/g, '').split(',').map(Number);
+
+                if (baseColor[0] === newColor[0] && baseColor[1] === newColor[1] && baseColor[2] === newColor[2] && baseColor[3] === newColor[3]) {
+                    return;
+                }
+
+                while (pixelStack.length) {
+                    const newPos = pixelStack.pop();
+                    const x = newPos[0];
+                    let y = newPos[1];
+                    let pixelPos = (y * canvas.width + x) * 4;
+
+                    while (y-- >= 0 && matchStartColor(pixelPos, baseColor)) {
+                        pixelPos -= canvas.width * 4;
+                    }
+
+                    pixelPos += canvas.width * 4;
+                    ++y;
+                    let reachLeft = false;
+                    let reachRight = false;
+
+                    while (y++ < canvas.height - 1 && matchStartColor(pixelPos, baseColor)) {
+                        colorPixel(pixelPos, newColor);
+
+                        if (x > 0) {
+                            if (matchStartColor(pixelPos - 4, baseColor)) {
+                                if (!reachLeft) {
+                                    pixelStack.push([x - 1, y]);
+                                    reachLeft = true;
+                                }
+                            } else if (reachLeft) {
+                                reachLeft = false;
+                            }
+                        }
+
+                        if (x < canvas.width - 1) {
+                            if (matchStartColor(pixelPos + 4, baseColor)) {
+                                if (!reachRight) {
+                                    pixelStack.push([x + 1, y]);
+                                    reachRight = true;
+                                }
+                            } else if (reachRight) {
+                                reachRight = false;
+                            }
+                        }
+
+                        pixelPos += canvas.width * 4;
+                    }
+                }
+
+                ctx.putImageData(imageData, 0, 0);
+
+                function matchStartColor(pixelPos, startColor) {
+                    const r = pixel[pixelPos];
+                    const g = pixel[pixelPos + 1];
+                    const b = pixel[pixelPos + 2];
+                    const a = pixel[pixelPos + 3];
+
+                    return r === startColor[0] && g === startColor[1] && b === startColor[2] && a === startColor[3];
+                }
+
+                function colorPixel(pixelPos, newColor) {
+                    pixel[pixelPos] = newColor[0];
+                    pixel[pixelPos + 1] = newColor[1];
+                    pixel[pixelPos + 2] = newColor[2];
+                    pixel[pixelPos + 3] = newColor[3];
+                }
+
+                return;
+            }
+
+            isDrawing = true;
+            x = e.offsetX;
+            y = e.offsetY;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.strokeStyle = color;
+        });
+
+        canvas.addEventListener('mousemove', e => {
+            if (isDrawing === true) {
+                if (mode === 'pen') {
+                    ctx.lineTo(e.offsetX, e.offsetY);
+                    ctx.stroke();
+                }
+
+                x = e.offsetX;
+                y = e.offsetY;
+            }
+        });
+
+        window.addEventListener('mouseup', e => {
+            if (isDrawing === true) {
+                x = 0;
+                y = 0;
+                isDrawing = false;
+                ctx.closePath();
+            }
+        });
+    </script>
+</body>
+</html>
