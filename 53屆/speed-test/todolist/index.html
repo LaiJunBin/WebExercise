@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+
+    <style>
+        :root {
+            --uncheck-delay: -1s;
+        }
+
+        body:hover {
+            --uncheck-delay: 0s;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            display: none;
+        }
+
+        label {
+            cursor: pointer;
+            position: relative;
+            top: 0;
+            display: inline-block;
+            padding-left: 25px;
+            font-size: 18px;
+            user-select: none;
+            transition: all .2s;
+        }
+
+        label::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: all .2s;
+        }
+
+        input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #ccc;
+            top: -1px;
+        }
+
+        input[type="checkbox"]:checked + label::before {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            text-align: center;
+            line-height: 1em;
+            margin-right: 10px;
+            position: absolute;
+            top: 3px;
+        }
+
+        input[type="checkbox"]:not(:checked) + label::before {
+            animation: uncheck .3s var(--uncheck-delay);
+        }
+
+        input[type="checkbox"]:checked + label::before {
+            animation: check .3s forwards;
+        }
+
+        @keyframes check {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                content: "\2713";
+            }
+        }
+
+        @keyframes uncheck {
+            0% {
+                content: "\2713";
+                text-align: center;
+                line-height: 1em;
+                margin-right: 10px;
+                border: 1px solid #ccc;
+                color:#ccc;
+                transform: scale(1);
+            }
+            33% {
+                transform: scale(1.2);
+            }
+            66% {
+                transform: scale(0);
+            }
+            99% {
+                content: "";
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+
+    <ul>
+        <li>
+            <input type="checkbox" id="todo-1">
+            <label for="todo-1">Item 1</label>
+        </li>
+        <li>
+            <input type="checkbox" id="todo-2">
+            <label for="todo-2">Item 2</label>
+        </li>
+        <li>
+            <input type="checkbox" id="todo-3">
+            <label for="todo-3">Item 3</label>
+        </li>
+        <li>
+            <input type="checkbox" id="todo-4">
+            <label for="todo-4">Item 4</label>
+        </li>
+        <li>
+            <input type="checkbox" id="todo-5">
+            <label for="todo-5">Item 5</label>
+        </li>
+    </ul>
+
+</body>
+</html>

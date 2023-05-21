@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise</title>
+    <style>
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all 1s;
+            background: linear-gradient(to bottom, #f7b733, #fc4a1a);
+        }
+
+        .box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border-radius: 50%;
+            transition: all 1s;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #fff;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        button:hover {
+            background: #eee;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button:active {
+            transform: scale(.95);
+        }
+
+        button:nth-child(1) {
+            color: #fc4a1a;
+        }
+
+        button:nth-child(2) {
+            color: #ffaa00;
+        }
+
+        body.night .background {
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+        }
+
+        body.night .box {
+            background: #000;
+        }
+
+        button.active {
+            background: #ddd;
+        }
+
+        body.night button.active {
+            background: #203a43;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="box"></div>
+    <div class="controls">
+        <button class="active">Day</button>
+        <button>Night</button>
+    </div>
+
+    <script>
+        const background = document.querySelector('.background');
+        const box = document.querySelector('.box');
+        const controls = document.querySelector('.controls');
+        const day = document.querySelector('.controls button:nth-child(1)');
+        const night = document.querySelector('.controls button:nth-child(2)');
+
+        day.addEventListener('click', () => {
+            background.style.background = 'linear-gradient(to bottom, #f7b733, #fc4a1a)';
+            box.style.background = '#fff';
+            controls.style.color = '#fff';
+            document.body.classList.remove('night');
+            day.classList.add('active');
+            night.classList.remove('active');
+        });
+
+        night.addEventListener('click', () => {
+            background.style.background = 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)';
+            box.style.background = '#000';
+            controls.style.color = '#000';
+            document.body.classList.add('night');
+            day.classList.remove('active');
+            night.classList.add('active');
+        });
+    </script>
+</body>
+</html>

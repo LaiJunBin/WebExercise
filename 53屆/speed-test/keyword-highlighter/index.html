@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Highlighter</title>
+
+    <style>
+        :root {
+            --highlight-color: yellow;
+        }
+
+        .highlight {
+            background-color: var(--highlight-color);
+        }
+    </style>
+</head>
+<body>
+    <h1>Contents</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, velit facere. Quidem impedit id illo deleniti, saepe voluptates itaque nihil ipsa explicabo voluptate hic quisquam soluta, quos est asperiores, eaque odit officia aut expedita ut unde obcaecati corrupti fuga? Nemo cupiditate placeat nisi ullam, expedita incidunt tempore ipsa obcaecati reiciendis. Officia excepturi provident vitae atque dignissimos harum amet illum eligendi. Asperiores ab placeat architecto, pariatur ipsa praesentium doloribus et repellat reprehenderit laudantium dolores, eligendi dolorem optio dignissimos reiciendis voluptatem quis nesciunt provident voluptatibus quam velit laboriosam? Vitae, eveniet? Voluptates laudantium quis tenetur rerum excepturi, pariatur explicabo nostrum minus nisi ipsum?</p>
+    <input type="text">
+    <button>Search</button>
+
+
+    <script>
+        const input = document.querySelector('input');
+        const button = document.querySelector('button');
+        const paragraphs = document.querySelectorAll('p');
+
+        paragraphs.forEach((p) => {
+            const text = p.innerText;
+            const words = text.split('');
+            const spans = words.map((word) => {
+                return `<span>${word}</span>`;
+            });
+            p.innerHTML = spans.join('');
+        });
+
+        const spans = [...document.querySelectorAll('span')];
+
+        button.addEventListener('click', () => {
+            const word = input.value;
+
+            const color = `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`;
+            document.documentElement.style.setProperty('--highlight-color', color);
+
+            spans.forEach((span) => {
+                span.classList.remove('highlight');
+            });
+
+            for (let i = 0; i < spans.length; i++) {
+                if (spans.slice(i, i + word.length).map(ele => ele.textContent).join('').toLowerCase() === word.toLowerCase()) {
+                    spans.slice(i, i + word.length).forEach((span) => {
+                        span.classList.add('highlight');
+                    });
+                    i += word.length;
+                }
+            }
+            input.value = '';
+        });
+    </script>
+</body>
+</html>

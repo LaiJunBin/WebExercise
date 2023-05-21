@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive grid layout</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        header, section, aside, footer, nav {
+            padding: 1em;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header, footer {
+            background-color: #333;
+        }
+
+        nav {
+            background-color: #666;
+        }
+
+        section.news-a {
+            background-color: #f00;
+        }
+
+        section.news-b {
+            background-color: #0f0;
+        }
+
+        section.news-c {
+            background-color: #00f;
+        }
+
+        aside {
+            background-color: #999;
+            padding: 4em 1em;
+        }
+
+        @media (min-width: 480px) {
+            body {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: auto auto auto;
+                grid-template-areas: 
+                    "header header header"
+                    "news-a news-b aside"
+                    "news-c news-c aside"
+                    "footer footer footer";
+            }
+
+            header {
+                grid-area: header;
+            }
+
+            nav {
+                grid-area: nav;
+            }
+
+            section.news-a {
+                grid-area: news-a;
+            }
+
+            section.news-b {
+                grid-area: news-b;
+            }
+
+            section.news-c {
+                grid-area: news-c;
+            }
+
+            aside {
+                grid-area: aside;
+            }
+
+            footer {
+                grid-area: footer;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>Header</header>
+    <section class="news-a">News A</section>
+    <aside>Ad Space</aside>
+    <section class="news-b">News B</section>
+    <section class="news-c">News C</section>
+    <Footer>Footer</Footer>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board Sortable</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .kanban-board {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+            background-color: #f1f1f1;
+        }
+
+        .kanban-board-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 30%;
+            height: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        .kanban-board-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 50px;
+            padding: 0 10px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .kanban-board-column-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .kanban-board-column-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .kanban-board-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 50px;
+            padding: 0 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            cursor: move;
+        }
+
+        .kanban-board-item-highlight {
+            background-color: #aaaa;
+            transform: rotate(5deg);
+        }
+
+        .kanban-board-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .kanban-board-item h3 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .kanban-board-item p {
+            font-size: 12px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <div class="kanban-board">
+        <div class="kanban-board-column">
+            <div class="kanban-board-column-header">
+                <h2>In Progress</h2>
+            </div>
+            <div class="kanban-board-column-body">
+                <div class="kanban-board-item">Item 4</div>
+                <div class="kanban-board-item">Item 5</div>
+                <div class="kanban-board-item">Item 6</div>
+            </div>
+        </div>
+        <div class="kanban-board-column">
+            <div class="kanban-board-column-header">
+                <h2>Done</h2>
+            </div>
+            <div class="kanban-board-column-body">
+                <div class="kanban-board-item">Item 7</div>
+                <div class="kanban-board-item">Item 8</div>
+                <div class="kanban-board-item">Item 9</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $(".kanban-board-column-body").sortable({
+                connectWith: ".kanban-board-column-body",
+                start: function(event, ui) {
+                    ui.item.toggleClass("kanban-board-item-highlight");
+                },
+                stop: function(event, ui) {
+                    ui.item.toggleClass("kanban-board-item-highlight");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
