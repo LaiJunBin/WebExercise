@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Preview</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        main{
+            min-width: 100vw;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        textarea, section{
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <textarea></textarea>
+        <section></section>
+    </main>
+
+    <script>
+        const textarea = document.querySelector('textarea');
+        const section = document.querySelector('section');
+
+        async function parseNewLine(syntax) {
+            return syntax.replace(/\n/gm, '<br>')
+        }
+
+        async function parseTitle(syntax) {   
+            const matched = syntax.matchAll(/(#{1,6})\s(\w+)(<br>)?/gm)
+            for (let match of matched) {
+                syntax = syntax.replace(match[0], `<h${match[1].length}>${match[2]}</h${match[1].length}>`)
+            }
+            return syntax
+        }
+
+        async function parseBolder(syntax) {
+            const matched = syntax.matchAll(/(\*\*|__)(\w+)(\*\*|__)/gm)
+            for (let match of matched) {
+                syntax = syntax.replace(match[0], `<b>${match[2]}</b>`)
+            }
+            return syntax
+        }
+
+        async function parseHorizontalLine(syntax) {
+            return syntax.replace(/---/gm, '<hr>')
+        }
+
+        async function parseList(syntax) {
+            const matched = syntax.matchAll(/(\*|\-)\s(\w+)(<br>)?/gm)
+            for (let match of matched) {
+                syntax = syntax.replace(match[0], `<li>${match[2]}</li>`)
+            }
+            return syntax
+        }
+
+        async function parseLink(syntax) {
+            const matched = syntax.matchAll(/\[([\w\S]+)\]\(([\w\S]+)\)/gm)
+
+            for (let match of matched) {
+                syntax = syntax.replace(match[0], `<a href="${match[2]}">${match[1]}</a>`)
+            }
+            return syntax
+        }
+
+        async function parseImage(syntax) {
+            const matched = syntax.matchAll(/\!\[([\w\S]+?)\]\(([\w\S]+?)\)(<br>)?/gm)
+
+            for (let match of matched) {
+                syntax = syntax.replace(match[0], `<img src="${match[2]}" alt="${match[1]}">`)
+            }
+            return syntax
+        }
+
+        textarea.addEventListener('input', async (e) => {
+            const value = e.target.value;
+            let syntax = await parseNewLine(value)
+                .then(parseTitle)
+                .then(parseBolder)
+                .then(parseHorizontalLine)
+                .then(parseList)
+                .then(parseImage)
+                .then(parseLink);
+
+            section.innerHTML = syntax;
+        })        
+    </script>
+</body>
+</html>
