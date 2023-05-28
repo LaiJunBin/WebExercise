@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Rotate Demo</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <canvas id="preview"></canvas>
+
+    <script>
+        function getRotateDeg(canvas, x, y) {
+            const { top, left } = canvas.getBoundingClientRect();
+            const dx = x - canvas.width / 2;
+            const dy = y - canvas.height / 2;
+            const rotate = Math.atan2(dy, dx);
+            return rotate;
+        }
+
+        function draw(ctx) {
+            ctx.fillStyle = 'black';
+            ctx.fillRect(canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height);
+            ctx.fillStyle = 'red';
+            ctx.arc(canvas.width / 2, canvas.height / 2, 10, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const preview = document.getElementById('preview');
+        const previewCtx = preview.getContext('2d');
+
+        const width = 200;
+        const height = 300;
+        const mouse = {
+            rotate: null,
+        };
+
+        draw(ctx);
+        canvas.addEventListener('mousedown', (e) => {
+            mouse.rotate = getRotateDeg(canvas, e.clientX, e.clientY);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (mouse.rotate) {
+                const rotate = getRotateDeg(canvas, e.clientX, e.clientY);
+                const diffRotate = rotate - mouse.rotate;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(diffRotate);
+                ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
+                draw(ctx);
+                ctx.restore();
+
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const { data } = imageData;
+                const nonEmptyPixels = [];
+                for (let i = 0; i < data.length; i += 4) {
+                    const alpha = data[i + 3];
+                    if (alpha > 0) {
+                        const x = (i / 4) % canvas.width;
+                        const y = Math.floor(i / 4 / canvas.width);
+                        nonEmptyPixels.push({
+                            x,
+                            y,
+                        });
+                    }
+                }
+
+                const bounding = {
+                    left: nonEmptyPixels.reduce((acc, cur) => {
+                        return Math.min(acc, cur.x);
+                    }, Infinity),
+                    top: nonEmptyPixels.reduce((acc, cur) => {
+                        return Math.min(acc, cur.y);
+                    }, Infinity),
+                    right: nonEmptyPixels.reduce((acc, cur) => {
+                        return Math.max(acc, cur.x);
+                    }, -Infinity),
+                    bottom: nonEmptyPixels.reduce((acc, cur) => {
+                        return Math.max(acc, cur.y);
+                    }, -Infinity),
+                };
+
+                const previewWidth = bounding.right - bounding.left;
+                const previewHeight = bounding.bottom - bounding.top;
+                preview.width = previewWidth;
+                preview.height = previewHeight;
+                previewCtx.clearRect(0, 0, preview.width, preview.height);
+
+                previewCtx.drawImage(
+                    canvas,
+                    bounding.left,
+                    bounding.top,
+                    previewWidth,
+                    previewHeight,
+                    0,
+                    0,
+                    previewWidth,
+                    previewHeight
+                );
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            const rotate = getRotateDeg(canvas, e.clientX, e.clientY);
+            const diffRotate = rotate - mouse.rotate;
+
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(diffRotate);
+            ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
+
+            mouse.rotate = null;
+        });
+    </script>
+</body>
+
+</html>
